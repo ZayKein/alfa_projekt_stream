@@ -6,59 +6,71 @@ from datetime import datetime
 import pandas as pd
 
 
-def transfer_table_with_progress(table_name, target_table):
-    # 1. Připojení k lokálnímu Postgresu
+def transfer_table_with_progress(table_name, target_table, incremental=False, date_col=None):
+    # 1. Inicializace Hooků
     pg_hook = PostgresHook(postgres_conn_id='postgres_default')
+    sf_hook = SnowflakeHook(snowflake_conn_id='snowflake_conn')
+
+    sf_engine = sf_hook.get_sqlalchemy_engine()
     pg_engine = pg_hook.get_sqlalchemy_engine()
 
-    print(f"--- START PŘENOSU: {table_name} ---", flush=True)
+    print(f"--- START PŘENOSU: {table_name} -> {target_table} ---", flush=True)
 
-    # Načtení dat do Pandas DataFrame
-    df = pd.read_sql(f"SELECT * FROM {table_name}", pg_engine)
-    # Snowflake vyžaduje VELKÁ PÍSMENA u názvů sloupců
+    # 2. Rozhodnutí o strategii (Manual Clean vs Incremental)
+    where_clause = ""
+
+    if not incremental:
+        # --- FIX PRO TVOU CHYBU: Ruční smazání tabulky místo replace v pandas ---
+        print(
+            f"INFO: Full Refresh - mažu tabulku RAW.{target_table.upper()}...", flush=True)
+        sf_hook.run(f"DROP TABLE IF EXISTS RAW.{target_table.upper()}")
+    else:
+        # Inkrementální logika: Zjistíme, kam až jsme se dostali
+        try:
+            query_max = f"SELECT MAX({date_col.upper()}) FROM RAW.{target_table.upper()}"
+            max_date = sf_hook.get_first(query_max)[0]
+            if max_date:
+                print(
+                    f"INFO: Nalezeno maximum v SF: {max_date}. Filtruji zdroj...", flush=True)
+                where_clause = f"WHERE {date_col} > '{max_date}'"
+        except Exception as e:
+            print(
+                f"INFO: Tabulka v SF neexistuje nebo je prázdná, začínám od nuly. ({e})", flush=True)
+
+    # 3. Načtení dat z lokálního Postgresu
+    query = f"SELECT * FROM {table_name} {where_clause}"
+    df = pd.read_sql(query, pg_engine)
     df.columns = [x.upper() for x in df.columns]
 
-    total_rows = len(df)
-    print(f"INFO: Načteno {total_rows} řádků z Postgresu.", flush=True)
+    if df.empty:
+        print(f"✅ HOTOVO: Žádná nová data k přenosu.", flush=True)
+        return
 
-    # 2. Připojení k Snowflake
-    sf_hook = SnowflakeHook(snowflake_conn_id='snowflake_conn')
-    sf_engine = sf_hook.get_sqlalchemy_engine()
+    print(
+        f"INFO: Zahajuji nahrávání {len(df)} řádků do Snowflake...", flush=True)
 
-    # Nastavení velikosti dávky (chunku)
+    # 4. Nahrávání do Snowflake (Vždy append, protože jsme drop vyřešili ručně)
     chunk_size = 50000
-    rows_uploaded = 0
-    first_chunk = True
-
-    print(f"INFO: Zahajuji nahrávání do Snowflake (schema RAW)...", flush=True)
-
-    # 3. Nahrávání po částech s logováním progresu
-    for i in range(0, total_rows, chunk_size):
+    for i in range(0, len(df), chunk_size):
         chunk = df.iloc[i: i + chunk_size]
 
-        # První balík tabulku vytvoří (REPLACE), další už jen přidávají (APPEND)
-        mode = 'replace' if first_chunk else 'append'
-
+        # Pandas si tabulku sám vytvoří (podle RAW schématu), pokud po DROPu neexistuje
         chunk.to_sql(
             target_table.upper(),
             sf_engine,
             schema='RAW',
-            if_exists=mode,
+            if_exists='append',
             index=False,
-            method='multi',  # Zrychluje nahrávání více řádků najednou
+            method='multi',
             chunksize=10000
         )
-
-        first_chunk = False
-        rows_uploaded += len(chunk)
         print(
-            f"PROGRES: {target_table} -> nahráno {rows_uploaded} z {total_rows} řádků...", flush=True)
+            f"PROGRES: {target_table} -> nahráno {min(i + chunk_size, len(df))} z {len(df)}...", flush=True)
 
-    print(
-        f"✅ HOTOVO: Tabulka {target_table} je kompletně v Snowflake.", flush=True)
+    print(f"✅ ÚSPĚCH: Tabulka {target_table} je v cloudu.", flush=True)
 
 
-# --- DEFINICE DAGU ---
+# --- KONFIGURACE DAGU ---
 default_args = {
     'owner': 'alfa_projekt',
     'start_date': datetime(2024, 1, 1),
@@ -72,18 +84,30 @@ with DAG(
     tags=['alfa_projekt']
 ) as dag:
 
-    # Mapování tabulek: Zdroj v PG -> Cíl v Snowflake RAW
-    tables_to_move = {
-        'dim_employees': 'DIM_EMPLOYEES',
-        'fact_payroll': 'FACT_PAYROLL',
-        'dim_products': 'DIM_PRODUCTS',
-        'fact_traffic': 'FACT_TRAFFIC',
-        'fact_orders': 'FACT_ORDERS'
-    }
+    # Definice tabulek a jejich režimů
+    # Full Refresh (Dimenze a Payroll)
+    dims = [
+        {'pg': 'dim_employees', 'sf': 'DIM_EMPLOYEES', 'inc': False, 'col': None},
+        {'pg': 'fact_payroll', 'sf': 'FACT_PAYROLL', 'inc': False, 'col': None},
+        {'pg': 'dim_products', 'sf': 'DIM_PRODUCTS', 'inc': False, 'col': None},
+    ]
 
-    for pg_table, sf_table in tables_to_move.items():
+    # Incremental (Fakta)
+    facts = [
+        {'pg': 'fact_traffic', 'sf': 'FACT_TRAFFIC',
+            'inc': True, 'col': 'event_time'},
+        {'pg': 'fact_orders', 'sf': 'FACT_ORDERS',
+            'inc': True, 'col': 'order_date'},
+    ]
+
+    for t in dims + facts:
         PythonOperator(
-            task_id=f'move_{pg_table}',
+            task_id=f'move_{t["pg"]}',
             python_callable=transfer_table_with_progress,
-            op_kwargs={'table_name': pg_table, 'target_table': sf_table}
+            op_kwargs={
+                'table_name': t['pg'],
+                'target_table': t['sf'],
+                'incremental': t['inc'],
+                'date_col': t['col']
+            }
         )

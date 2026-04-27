@@ -7,6 +7,7 @@ import os
 
 
 def calculate_monthly_salary(age_at_hire, hire_date, current_date):
+    # Logika výpočtu mzdy zůstává identická, aby se historické mzdy neměnily
     y_start = (current_date.year - 2021)
     m_min = 28000 * (1.04 ** y_start)
     m_max = 33000 * (1.04 ** y_start)
@@ -22,7 +23,7 @@ def calculate_monthly_salary(age_at_hire, hire_date, current_date):
         else:
             s_base = m_max
         adj_base = s_base * (1.04 ** y_exp)
-        if years_exp := (current_date - hire_date).days // 365 >= 1:
+        if (current_date - hire_date).days // 365 >= 1:
             adj_base = max(adj_base, m_max)
         salary = adj_base * (1.05 ** (y_exp if y_exp < 3 else 3))
     return round(salary)
@@ -34,18 +35,20 @@ def generate_hr_data():
     master_file = f"{path}/employees_master.csv"
     payroll_file = f"{path}/employees_payroll.csv"
 
-    # --- 1. MASTER DATA (ZAMĚSTNANCI) ---
+    # --- 1. MASTER DATA (ZAMĚSTNANCI) - FIXNÍ BLOK ---
     if os.path.exists(master_file):
         df_master = pd.read_csv(master_file, parse_dates=[
                                 'hire_date', 'exit_date'])
         if len(df_master) >= 750:
-            print("Zaměstnanci již existují, přeskakuji generování master dat.")
+            print(
+                f"INFO: Nalezeno {len(df_master)} zaměstnanců. Generování master dat přeskakuji.")
         else:
-            # Pokud by jich bylo méně, mohl bys doplňovat, ale pro náš účel stačí kontrola
-            pass
+            print(
+                "INFO: Master data jsou nekompletní, ale pro stabilitu je nebudu přepisovat.")
     else:
-        # Generování úplně poprvé (identické s tvým původním kódem)
-        random.seed(42)  # Seed pro konzistenci při případném smazání
+        print("INFO: Generuji master data zaměstnanců poprvé...")
+        # Seed zajišťuje, že pokud bys soubor smazal, vygenerují se ti samí lidé
+        random.seed(42)
         emp_m = []
         f_m = ["Jan", "Petr", "Martin", "Jakub", "Tomáš",
                "Lukáš", "Filip", "David", "Ondřej", "Marek"]
@@ -85,52 +88,64 @@ def generate_hr_data():
                                  'employee_id', 'name', 'gender', 'current_age', 'hire_date', 'exit_date'])
         df_master.to_csv(master_file, index=False)
 
-    # --- 2. PAYROLL DATA (MZDY) ---
+    # --- 2. PAYROLL DATA (MZDY) - INKREMENTÁLNÍ BLOK ---
     existing_payroll = pd.DataFrame()
     if os.path.exists(payroll_file):
         existing_payroll = pd.read_csv(
             payroll_file, parse_dates=['month_year'])
-        last_date = existing_payroll['month_year'].max()
-        start_sync = (last_date + timedelta(days=32)).replace(day=1)
+        if not existing_payroll.empty:
+            last_date = existing_payroll['month_year'].max()
+            # Začneme generovat od měsíce po tom posledním uloženém
+            start_sync = (last_date + timedelta(days=32)).replace(day=1)
+        else:
+            start_sync = df_master['hire_date'].min().replace(day=1)
     else:
         start_sync = df_master['hire_date'].min().replace(day=1)
 
     new_payroll = []
-    today = datetime.now().replace(day=1)
+    # Cílový měsíc je aktuální měsíc
+    target_date = datetime.now().replace(day=1)
 
-    if start_sync > today:
-        print("Všechny mzdy jsou aktuální.")
+    if start_sync > target_date:
+        print(
+            f"INFO: Mzdy jsou aktuální (poslední měsíc v souboru: {existing_payroll['month_year'].max().date()})")
     else:
-        # Procházíme měsíce, které chybí
+        print(
+            f"INFO: Dopočítávám mzdy od {start_sync.date()} do {target_date.date()}...")
         curr_m = start_sync
-        while curr_m <= today:
-            # Filtrujeme lidi, kteří v daném měsíci pracovali
-            active_this_month = df_master[
-                (df_master['hire_date'] <= curr_m) &
-                ((df_master['exit_date'].isna()) |
-                 (df_master['exit_date'] >= curr_m))
-            ]
+        while curr_m <= target_date:
+            # Filtrujeme lidi, kteří v tomto měsíci byli v pracovním poměru
+            mask = (df_master['hire_date'] <= curr_m) & \
+                   ((df_master['exit_date'].isna()) |
+                    (df_master['exit_date'] >= curr_m))
+            active_this_month = df_master[mask]
 
             for _, emp in active_this_month.iterrows():
-                # Výpočet věku při nástupu pro mzdovou funkci
+                # Věk při nástupu (pro logiku výpočtu)
                 age_h = max(
                     18, emp['current_age'] - ((datetime.now() - emp['hire_date']).days // 365))
                 salary = calculate_monthly_salary(
                     age_h, emp['hire_date'], curr_m)
                 new_payroll.append(
-                    [emp['employee_id'], salary, curr_m.strftime('%Y-%m-01')])
+                    [emp['employee_id'], salary, curr_m.strftime('%Y-%m-%d')])
 
+            # Skok na další měsíc
             curr_m = (curr_m.replace(day=28) +
                       timedelta(days=4)).replace(day=1)
 
         if new_payroll:
             df_new = pd.DataFrame(new_payroll, columns=[
                                   'employee_id', 'monthly_salary', 'month_year'])
+            # Spojíme stará data s novými
             df_final_payroll = pd.concat(
                 [existing_payroll, df_new], ignore_index=True)
             df_final_payroll.to_csv(payroll_file, index=False)
-            print(f"Přidáno {len(new_payroll)} nových mzdových záznamů.")
+            print(
+                f"✅ HOTOVO: Přidáno {len(new_payroll)} nových mzdových záznamů.")
 
 
-with DAG('00_hr_generator', start_date=datetime(2023, 1, 1), schedule_interval=None, catchup=False, tags=['alfa_hr']) as dag:
+# Airflow definice
+default_args = {'owner': 'alfa_hr', 'start_date': datetime(2023, 1, 1)}
+
+with DAG('00_hr_generator', default_args=default_args, schedule_interval=None, catchup=False, tags=['alfa_hr']) as dag:
     PythonOperator(task_id='gen_hr', python_callable=generate_hr_data)

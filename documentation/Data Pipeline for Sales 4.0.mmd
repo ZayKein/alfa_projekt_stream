@@ -1,0 +1,42 @@
+graph TD
+    %% Airflow jako dirigent
+    subgraph Control_Plane [Airflow Orchestrator]
+        AF[Airflow Scheduler]
+    end
+
+    %% Datové vrstvy
+    subgraph Storage_Layer [Data Storage & Processing]
+        direction TB
+        subgraph Local [Local Environment - Docker]
+            PE[Python Data Engines]
+            PG[(PostgreSQL ODS)]
+        end
+
+        subgraph Cloud [Cloud Warehouse - Snowflake]
+            SFR[[Snowflake RAW]]
+            DBT{dbt Transformations}
+            SFG[[Snowflake GOLD]]
+        end
+    end
+
+    %% Řídící toky (Airflow dává příkazy)
+    AF -.->|1. Trigger Gen| PE
+    AF -.->|2. Load ODS| PG
+    AF -.->|3. Push to Cloud| SFR
+    AF -.->|4. Run Models| DBT
+
+    %% Datové toky
+    PE ===>|CSV Bridge| PG
+    PG ===>|Vectorized Transfer| SFR
+    SFR ===> DBT
+    DBT ===> SFG
+
+    %% Výstup
+    SFG ---> PBI((Power BI Dashboards))
+
+    %% Stylování
+    style Control_Plane fill:#f5f5f5,stroke:#333,stroke-dasharray: 5 5
+    style AF fill:#00a1ff,color:#fff,stroke-width:2px
+    style DBT fill:#ff694b,color:#fff,stroke-width:2px
+    style SFG fill:#00a,color:#fff
+    style PBI fill:#fb0,stroke:#333

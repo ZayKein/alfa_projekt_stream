@@ -9,6 +9,21 @@ import os
 def generate_products():
     path = "/opt/airflow/data"
     os.makedirs(path, exist_ok=True)
+    file_path = f"{path}/products_raw.test.csv"
+    target_count = 300
+
+    # --- POJISTKA PROTI PŘEPISU ---
+    if os.path.exists(file_path):
+        df_existing = pd.read_csv(file_path)
+        if len(df_existing) >= target_count:
+            print(
+                f"INFO: Katalog produktů již existuje ({len(df_existing)} položek). Přeskakuji generování.")
+            return
+
+    print(f"INFO: Generuji fixní katalog {target_count} produktů...")
+
+    # Seed zajišťuje, že product_id 1 bude vždy ten samý model se stejnou cenou
+    random.seed(42)
 
     models_dict = {
         'iPhony': ['iPhone 13', 'iPhone 14', 'iPhone 15', 'iPhone 15 Pro Max'],
@@ -35,7 +50,7 @@ def generate_products():
     }
 
     prods = []
-    for i in range(1, 301):
+    for i in range(1, target_count + 1):
         m_cat = random.choice(list(cat_mapping.keys()))
         s_cat = random.choice(cat_mapping[m_cat])
         base_model_name = random.choice(models_dict[s_cat])
@@ -51,11 +66,13 @@ def generate_products():
         prods.append([i, model_full_name, m_cat, s_cat,
                      price, round(price * 0.75)])
 
-    pd.DataFrame(prods, columns=['product_id', 'name', 'category', 'subcategory',
-                 'base_price', 'unit_cost']).to_csv(f"{path}/products_raw.test.csv", index=False)
+    df_final = pd.DataFrame(prods, columns=[
+                            'product_id', 'name', 'category', 'subcategory', 'base_price', 'unit_cost'])
+    df_final.to_csv(file_path, index=False)
+    print(f"✅ HOTOVO: Katalog {target_count} produktů uložen do {file_path}")
 
 
-# --- TADY CHYBĚLA TATO ČÁST ---
+# --- DEFINICE DAGU ---
 default_args = {
     'owner': 'alfa_stream',
     'start_date': datetime(2023, 1, 1),

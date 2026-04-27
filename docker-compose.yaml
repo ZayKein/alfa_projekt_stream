@@ -14,7 +14,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U airflow"]
+      test: [ "CMD-SHELL", "pg_isready -U airflow" ]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -32,17 +32,19 @@ services:
       - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://airflow:airflow@postgres:5432/airflow
       - AIRFLOW__CORE__LOAD_EXAMPLES=False
       - AIRFLOW__CORE__TEST_CONNECTION=Enabled
+      - AIRFLOW__CORE__EXECUTOR=LocalExecutor
+      - AIRFLOW__CORE__PARALLELISM=8
+      - AIRFLOW__CORE__MAX_ACTIVE_RUNS_PER_DAG=2
     ports:
       - "8082:8080"
     volumes:
       - ./dags:/opt/airflow/dags
       - ./data:/opt/airflow/data
       - ./keys:/opt/airflow/keys
+      - ./dbt_alfa:/opt/airflow/dbt_alfa
+      - ./profiles.yml:/opt/airflow/profiles.yml
     command: >
-      bash -c "pip install dbt-snowflake pandas &&
-      airflow db init &&
-      airflow users create --username admin --firstname admin --lastname admin --role Admin --email admin@example.com --password admin &&
-      (airflow webserver & airflow scheduler)"
+      bash -c "pip install dbt-snowflake pandas && airflow db init && airflow users create --username admin --firstname admin --lastname admin --role Admin --email admin@example.com --password admin && (airflow webserver & airflow scheduler)"
 
 volumes:
   postgres_data:

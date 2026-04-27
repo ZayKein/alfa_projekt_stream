@@ -1,0 +1,14 @@
+dbt_alfa:
+  target: dev
+  outputs:
+    dev:
+      type: snowflake
+      account: lraixsh-yh49291
+      user: ZAYKEIN
+      password: r7fGZ87nrkPmKby
+      role: ACCOUNTADMIN
+      database: ALFA_PROJEKT
+      warehouse: ALFA_WH
+      schema: SILVER
+      threads: 4
+      client_session_keep_alive: False

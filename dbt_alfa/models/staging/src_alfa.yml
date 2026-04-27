@@ -1,0 +1,11 @@
+version: 2
+sources:
+  - name: raw_data
+    database: ALFA_PROJEKT
+    schema: RAW
+    tables:
+      - name: DIM_PRODUCTS
+      - name: DIM_EMPLOYEES
+      - name: FACT_PAYROLL
+      - name: FACT_TRAFFIC
+      - name: FACT_ORDERS

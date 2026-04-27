@@ -5,29 +5,29 @@ EN: Alfa Stream v4.5 is a comprehensive end-to-end data platform simulating real
 mermaid
 graph TD
     %% Airflow jako centrální mozek
-    subgraph Control_Plane [Orchestration Layer - Airflow]
-        MD[05_Master_Orchestrator]
-        
-        subgraph Pipelines [Individual Pipelines]
-            P0[00_HR_Gen]
-            P1[01_A_B_C_Sales_Gen]
-            P2[02_Postgres_Load]
-            P3[03_Cloud_Sync]
-            P4[04_dbt_Transform]
+    subgraph Control_Plane ["Orchestration Layer - Airflow"]
+        MD["05_Master_Orchestrator"]        
+               
+        subgraph Pipelines ["Individual Pipelines"]
+            P0["00_HR_Gen"]
+            P1["01_Sales_Gen"]
+            P2["02_Postgres_Load"]
+            P3["03_Cloud_Sync"]
+            P4["04_dbt_Transform"]
         end
     end
 
     %% Datové vrstvy
-    subgraph Storage_Layer [Data Storage & Processing]
+    subgraph Storage_Layer ["Data Storage & Processing"]
         direction TB
-        subgraph Local [Local Environment - Docker]
-            PE[Python Data Engines]
-            PG[(PostgreSQL ODS)]
+        subgraph Local ["Local Environment - Docker"]
+            PE["Python Data Engines"]
+            PG[("PostgreSQL ODS")]
         end
 
-        subgraph Cloud [Cloud Warehouse - Snowflake]
+        subgraph Cloud ["Cloud Warehouse - Snowflake"]
             SFR[[Snowflake RAW]]
-            DBT{dbt Transformations}
+            DBT{"dbt Transformations"}
             SFG[[Snowflake GOLD]]
         end
     end
@@ -51,7 +51,7 @@ graph TD
     DBT ===>|Incremental Gold Marts| SFG
 
     %% Výstup
-    SFG ---> PBI((Power BI Dashboards))
+    SFG ---> PBI(("Power BI Dashboards"))
 
     %% Stylování
     style Control_Plane fill:#f9f9f9,stroke:#333,stroke-dasharray: 5 5
@@ -60,7 +60,7 @@ graph TD
     style DBT fill:#ff694b,color:#fff,stroke-width:2px
     style SFG fill:#ffd700,color:#000,stroke-width:2px
     style PBI fill:#fb0,stroke:#333
-
+Při použití kódu buďte obezřetní.
 ⚙️ Pipelines Overview / Přehled procesů
 CZ: Systém je řízen Master Orchestrátorem (DAG 05), který sekvenčně spouští:
 00 & 01A: Správa Master dat (Zaměstnanci, Produkty).

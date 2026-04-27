@@ -1,7 +1,10 @@
-{{ config(
-    materialized='incremental',
-    unique_key='month_prod_id'
-) }}
+
+  
+    
+
+        create or replace transient table ALFA_PROJEKT.SILVER_GOLD.mart_monthly_product_sales
+         as
+        (
 
 SELECT
     MD5(CONCAT(DATE_TRUNC('month', o.order_timestamp), p.product_id)) as month_prod_id,
@@ -18,11 +21,12 @@ SELECT
     SUM((o.quantity * p.base_price) + o.service_price) as total_revenue,
     -- Marže (pouze z produktů)
     SUM(o.quantity * (p.base_price - p.unit_cost)) as product_margin
-FROM {{ ref('stg_orders') }} o
-JOIN {{ ref('stg_products') }} p ON o.product_id = p.product_id
+FROM ALFA_PROJEKT.SILVER_SILVER.stg_orders o
+JOIN ALFA_PROJEKT.SILVER_SILVER.stg_products p ON o.product_id = p.product_id
 
-{% if is_incremental() %}
-  WHERE o.order_timestamp > (SELECT MAX(sales_month) FROM {{ this }})
-{% endif %}
+
 
 GROUP BY 1, 2, 3, 4, 5
+        );
+      
+  

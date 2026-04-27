@@ -29,6 +29,7 @@ services:
     environment:
       - LOAD_EX=False
       - EXECUTOR=LocalExecutor
+      - SF_PASSWORD=z4drXQhdtEfy7JE
       - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://airflow:airflow@postgres:5432/airflow
       - AIRFLOW__CORE__LOAD_EXAMPLES=False
       - AIRFLOW__CORE__TEST_CONNECTION=Enabled

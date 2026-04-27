@@ -1,0 +1,708 @@
+[0m22:01:45.997900 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x71337a1fe4c0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7133780218b0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7133780216a0>]}
+
+
+============================== 22:01:46.002056 | ad790a2e-1199-401e-a110-8db9594dd144 ==============================
+[0m22:01:46.002056 [info ] [MainThread]: Running with dbt=1.8.7
+[0m22:01:46.002496 [debug] [MainThread]: running dbt with arguments {'printer_width': '80', 'indirect_selection': 'eager', 'write_json': 'True', 'log_cache_events': 'False', 'partial_parse': 'True', 'cache_selected_only': 'False', 'profiles_dir': '/opt/airflow', 'fail_fast': 'False', 'version_check': 'True', 'log_path': '/opt/airflow/dbt_alfa/logs', 'warn_error': 'None', 'debug': 'False', 'use_colors': 'True', 'use_experimental_parser': 'False', 'no_print': 'None', 'quiet': 'False', 'empty': 'False', 'log_format': 'default', 'introspect': 'True', 'warn_error_options': 'WarnErrorOptions(include=[], exclude=[])', 'static_parser': 'True', 'target_path': 'None', 'invocation_command': 'dbt run', 'send_anonymous_usage_stats': 'True'}
+[0m22:01:46.646377 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'project_id', 'label': 'ad790a2e-1199-401e-a110-8db9594dd144', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x71331886a1c0>]}
+[0m22:01:46.682961 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'adapter_info', 'label': 'ad790a2e-1199-401e-a110-8db9594dd144', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x713379355130>]}
+[0m22:01:46.683958 [info ] [MainThread]: Registered adapter: snowflake=1.8.4
+[0m22:01:46.699638 [debug] [MainThread]: checksum: 4af21dafb485259c48497ac86b711ddb1982f3d0f1c0ca4e09356de488b753c0, vars: {}, profile: , target: , version: 1.8.7
+[0m22:01:46.700337 [info ] [MainThread]: Unable to do partial parsing because saved manifest not found. Starting full parse.
+[0m22:01:46.700758 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'partial_parser', 'label': 'ad790a2e-1199-401e-a110-8db9594dd144', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x713378021a00>]}
+[0m22:01:47.559639 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'load_project', 'label': 'ad790a2e-1199-401e-a110-8db9594dd144', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x71336e87a4f0>]}
+[0m22:01:47.635653 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'resource_counts', 'label': 'ad790a2e-1199-401e-a110-8db9594dd144', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x71336e7b71f0>]}
+[0m22:01:47.636113 [info ] [MainThread]: Found 11 models, 5 sources, 454 macros
+[0m22:01:47.636425 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'runnable_timing', 'label': 'ad790a2e-1199-401e-a110-8db9594dd144', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x713370f11c40>]}
+[0m22:01:47.637699 [info ] [MainThread]: 
+[0m22:01:47.638176 [debug] [MainThread]: Acquiring new snowflake connection 'master'
+[0m22:01:47.641816 [debug] [ThreadPool]: Acquiring new snowflake connection 'list_ALFA_PROJEKT'
+[0m22:01:47.642381 [debug] [ThreadPool]: Acquiring new snowflake connection 'list_ALFA_PROJEKT'
+[0m22:01:47.651672 [debug] [ThreadPool]: Using snowflake connection "list_ALFA_PROJEKT"
+[0m22:01:47.653501 [debug] [ThreadPool]: Using snowflake connection "list_ALFA_PROJEKT"
+[0m22:01:47.653854 [debug] [ThreadPool]: On list_ALFA_PROJEKT: /* {"app": "dbt", "dbt_version": "1.8.7", "profile_name": "dbt_alfa", "target_name": "dev", "connection_name": "list_ALFA_PROJEKT"} */
+show terse schemas in database ALFA_PROJEKT
+    limit 10000
+[0m22:01:47.654178 [debug] [ThreadPool]: On list_ALFA_PROJEKT: /* {"app": "dbt", "dbt_version": "1.8.7", "profile_name": "dbt_alfa", "target_name": "dev", "connection_name": "list_ALFA_PROJEKT"} */
+show terse schemas in database ALFA_PROJEKT
+    limit 10000
+[0m22:01:47.654495 [debug] [ThreadPool]: Opening a new connection, currently in state init
+[0m22:01:47.654811 [debug] [ThreadPool]: Opening a new connection, currently in state init
+[0m22:01:48.468221 [debug] [ThreadPool]: Snowflake adapter: Error running SQL: /* {"app": "dbt", "dbt_version": "1.8.7", "profile_name": "dbt_alfa", "target_name": "dev", "connection_name": "list_ALFA_PROJEKT"} */
+show terse schemas in database ALFA_PROJEKT
+    limit 10000
+[0m22:01:48.468800 [debug] [ThreadPool]: Snowflake adapter: Rolling back transaction.
+[0m22:01:48.469263 [debug] [ThreadPool]: Snowflake adapter: Error running SQL: macro list_schemas
+[0m22:01:48.469607 [debug] [ThreadPool]: Snowflake adapter: Rolling back transaction.
+[0m22:01:48.469994 [debug] [ThreadPool]: On list_ALFA_PROJEKT: No close available on handle
+[0m22:01:48.489764 [debug] [ThreadPool]: Snowflake adapter: Error running SQL: /* {"app": "dbt", "dbt_version": "1.8.7", "profile_name": "dbt_alfa", "target_name": "dev", "connection_name": "list_ALFA_PROJEKT"} */
+show terse schemas in database ALFA_PROJEKT
+    limit 10000
+[0m22:01:48.490070 [debug] [ThreadPool]: Snowflake adapter: Rolling back transaction.
+[0m22:01:48.490411 [debug] [ThreadPool]: Snowflake adapter: Error running SQL: macro list_schemas
+[0m22:01:48.490702 [debug] [ThreadPool]: Snowflake adapter: Rolling back transaction.
+[0m22:01:48.491033 [debug] [ThreadPool]: On list_ALFA_PROJEKT: No close available on handle
+[0m22:01:48.491558 [debug] [MainThread]: Connection 'master' was properly closed.
+[0m22:01:48.491904 [debug] [MainThread]: Connection 'list_ALFA_PROJEKT' was properly closed.
+[0m22:01:48.492151 [debug] [MainThread]: Connection 'list_ALFA_PROJEKT' was properly closed.
+[0m22:01:48.492469 [info ] [MainThread]: 
+[0m22:01:48.492908 [info ] [MainThread]: Finished running  in 0 hours 0 minutes and 0.85 seconds (0.85s).
+[0m22:01:48.493453 [error] [MainThread]: Encountered an error:
+Runtime Error
+  Database error while listing schemas in database "ALFA_PROJEKT"
+  Database Error
+    250001 (08001): Failed to connect to DB: lraixsh-yh49291.snowflakecomputing.com:443. Incorrect username or password was specified.
+[0m22:01:48.494518 [debug] [MainThread]: Resource report: {"command_name": "run", "command_wall_clock_time": 2.531989, "process_user_time": 2.780604, "process_kernel_time": 2.044801, "process_mem_max_rss": "207432", "process_in_blocks": "67960", "process_out_blocks": "1928", "command_success": false}
+[0m22:01:48.495079 [debug] [MainThread]: Command `dbt run` failed at 22:01:48.494994 after 2.53 seconds
+[0m22:01:48.495447 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x71337a1fe4c0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x713371084610>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x71336e7ee4f0>]}
+[0m22:01:48.495800 [debug] [MainThread]: Flushing usage events
+[0m22:03:19.957452 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x708b83bc4430>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x708b82040ca0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x708b81a667c0>]}
+
+
+============================== 22:03:19.962988 | e07c626b-ffb7-4009-958d-3ebaf0efe65e ==============================
+[0m22:03:19.962988 [info ] [MainThread]: Running with dbt=1.8.7
+[0m22:03:19.963448 [debug] [MainThread]: running dbt with arguments {'printer_width': '80', 'indirect_selection': 'eager', 'log_cache_events': 'False', 'write_json': 'True', 'partial_parse': 'True', 'cache_selected_only': 'False', 'warn_error': 'None', 'fail_fast': 'False', 'debug': 'False', 'log_path': '/opt/airflow/dbt_alfa/logs', 'profiles_dir': '/opt/airflow', 'version_check': 'True', 'use_colors': 'True', 'use_experimental_parser': 'False', 'no_print': 'None', 'quiet': 'False', 'empty': 'False', 'log_format': 'default', 'introspect': 'True', 'static_parser': 'True', 'warn_error_options': 'WarnErrorOptions(include=[], exclude=[])', 'target_path': 'None', 'invocation_command': 'dbt run --full-refresh', 'send_anonymous_usage_stats': 'True'}
+[0m22:03:20.937602 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'project_id', 'label': 'e07c626b-ffb7-4009-958d-3ebaf0efe65e', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x708b81a45a30>]}
+[0m22:03:20.975894 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'adapter_info', 'label': 'e07c626b-ffb7-4009-958d-3ebaf0efe65e', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x708b8396b1f0>]}
+[0m22:03:20.976930 [info ] [MainThread]: Registered adapter: snowflake=1.8.4
+[0m22:03:20.993852 [debug] [MainThread]: checksum: 4af21dafb485259c48497ac86b711ddb1982f3d0f1c0ca4e09356de488b753c0, vars: {}, profile: , target: , version: 1.8.7
+[0m22:03:21.120505 [debug] [MainThread]: Partial parsing enabled: 0 files deleted, 0 files added, 0 files changed.
+[0m22:03:21.120958 [debug] [MainThread]: Partial parsing enabled, no changes found, skipping parsing
+[0m22:03:21.149424 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'load_project', 'label': 'e07c626b-ffb7-4009-958d-3ebaf0efe65e', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x708b7df0ef10>]}
+[0m22:03:21.287535 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'resource_counts', 'label': 'e07c626b-ffb7-4009-958d-3ebaf0efe65e', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x708b85f739a0>]}
+[0m22:03:21.288047 [info ] [MainThread]: Found 11 models, 5 sources, 454 macros
+[0m22:03:21.288382 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'runnable_timing', 'label': 'e07c626b-ffb7-4009-958d-3ebaf0efe65e', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x708b81b3d610>]}
+[0m22:03:21.289765 [info ] [MainThread]: 
+[0m22:03:21.290305 [debug] [MainThread]: Acquiring new snowflake connection 'master'
+[0m22:03:21.294247 [debug] [ThreadPool]: Acquiring new snowflake connection 'list_ALFA_PROJEKT'
+[0m22:03:21.301438 [debug] [ThreadPool]: Acquiring new snowflake connection 'list_ALFA_PROJEKT'
+[0m22:03:21.306514 [debug] [ThreadPool]: Using snowflake connection "list_ALFA_PROJEKT"
+[0m22:03:21.308874 [debug] [ThreadPool]: Using snowflake connection "list_ALFA_PROJEKT"
+[0m22:03:21.309225 [debug] [ThreadPool]: On list_ALFA_PROJEKT: /* {"app": "dbt", "dbt_version": "1.8.7", "profile_name": "dbt_alfa", "target_name": "dev", "connection_name": "list_ALFA_PROJEKT"} */
+show terse schemas in database ALFA_PROJEKT
+    limit 10000
+[0m22:03:21.309552 [debug] [ThreadPool]: On list_ALFA_PROJEKT: /* {"app": "dbt", "dbt_version": "1.8.7", "profile_name": "dbt_alfa", "target_name": "dev", "connection_name": "list_ALFA_PROJEKT"} */
+show terse schemas in database ALFA_PROJEKT
+    limit 10000
+[0m22:03:21.309898 [debug] [ThreadPool]: Opening a new connection, currently in state init
+[0m22:03:21.310431 [debug] [ThreadPool]: Opening a new connection, currently in state init
+[0m22:03:22.162698 [debug] [ThreadPool]: Snowflake adapter: Error running SQL: /* {"app": "dbt", "dbt_version": "1.8.7", "profile_name": "dbt_alfa", "target_name": "dev", "connection_name": "list_ALFA_PROJEKT"} */
+show terse schemas in database ALFA_PROJEKT
+    limit 10000
+[0m22:03:22.163275 [debug] [ThreadPool]: Snowflake adapter: Rolling back transaction.
+[0m22:03:22.163743 [debug] [ThreadPool]: Snowflake adapter: Error running SQL: macro list_schemas
+[0m22:03:22.164041 [debug] [ThreadPool]: Snowflake adapter: Rolling back transaction.
+[0m22:03:22.164417 [debug] [ThreadPool]: On list_ALFA_PROJEKT: No close available on handle
+[0m22:03:22.167848 [debug] [ThreadPool]: Snowflake adapter: Error running SQL: /* {"app": "dbt", "dbt_version": "1.8.7", "profile_name": "dbt_alfa", "target_name": "dev", "connection_name": "list_ALFA_PROJEKT"} */
+show terse schemas in database ALFA_PROJEKT
+    limit 10000
+[0m22:03:22.168173 [debug] [ThreadPool]: Snowflake adapter: Rolling back transaction.
+[0m22:03:22.168529 [debug] [ThreadPool]: Snowflake adapter: Error running SQL: macro list_schemas
+[0m22:03:22.168873 [debug] [ThreadPool]: Snowflake adapter: Rolling back transaction.
+[0m22:03:22.169200 [debug] [ThreadPool]: On list_ALFA_PROJEKT: No close available on handle
+[0m22:03:22.169745 [debug] [MainThread]: Connection 'master' was properly closed.
+[0m22:03:22.170040 [debug] [MainThread]: Connection 'list_ALFA_PROJEKT' was properly closed.
+[0m22:03:22.170331 [debug] [MainThread]: Connection 'list_ALFA_PROJEKT' was properly closed.
+[0m22:03:22.170662 [info ] [MainThread]: 
+[0m22:03:22.171041 [info ] [MainThread]: Finished running  in 0 hours 0 minutes and 0.88 seconds (0.88s).
+[0m22:03:22.171604 [error] [MainThread]: Encountered an error:
+Runtime Error
+  Database error while listing schemas in database "ALFA_PROJEKT"
+  Database Error
+    250001 (08001): Failed to connect to DB: lraixsh-yh49291.snowflakecomputing.com:443. Incorrect username or password was specified.
+[0m22:03:22.172807 [debug] [MainThread]: Resource report: {"command_name": "run", "command_wall_clock_time": 2.2498872, "process_user_time": 2.088628, "process_kernel_time": 2.259047, "process_mem_max_rss": "200904", "process_in_blocks": "113584", "process_out_blocks": "1000", "command_success": false}
+[0m22:03:22.173338 [debug] [MainThread]: Command `dbt run` failed at 22:03:22.173252 after 2.25 seconds
+[0m22:03:22.173705 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x708b83bc4430>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x708b2813db80>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x708b7de2f040>]}
+[0m22:03:22.174071 [debug] [MainThread]: Flushing usage events
+[0m22:06:52.025772 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7bfd3fd4f4c0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7bfd3eb84220>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7bfd3ddb20d0>]}
+
+
+============================== 22:06:52.030757 | 2e255ff8-6a8b-44a3-8f34-786b4e058606 ==============================
+[0m22:06:52.030757 [info ] [MainThread]: Running with dbt=1.8.7
+[0m22:06:52.031167 [debug] [MainThread]: running dbt with arguments {'printer_width': '80', 'indirect_selection': 'eager', 'write_json': 'True', 'log_cache_events': 'False', 'partial_parse': 'True', 'cache_selected_only': 'False', 'profiles_dir': '/opt/airflow', 'debug': 'False', 'version_check': 'True', 'log_path': '/opt/airflow/dbt_alfa/logs', 'warn_error': 'None', 'fail_fast': 'False', 'use_colors': 'True', 'use_experimental_parser': 'False', 'empty': 'False', 'quiet': 'False', 'no_print': 'None', 'log_format': 'default', 'static_parser': 'True', 'invocation_command': 'dbt run', 'introspect': 'True', 'target_path': 'None', 'warn_error_options': 'WarnErrorOptions(include=[], exclude=[])', 'send_anonymous_usage_stats': 'True'}
+[0m22:06:52.645580 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'project_id', 'label': '2e255ff8-6a8b-44a3-8f34-786b4e058606', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7bfce4b26ee0>]}
+[0m22:06:52.682591 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'adapter_info', 'label': '2e255ff8-6a8b-44a3-8f34-786b4e058606', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7bfd3dbaafd0>]}
+[0m22:06:52.683338 [info ] [MainThread]: Registered adapter: snowflake=1.8.4
+[0m22:06:52.698963 [debug] [MainThread]: checksum: 4af21dafb485259c48497ac86b711ddb1982f3d0f1c0ca4e09356de488b753c0, vars: {}, profile: , target: , version: 1.8.7
+[0m22:06:52.792771 [debug] [MainThread]: Partial parsing enabled: 0 files deleted, 0 files added, 0 files changed.
+[0m22:06:52.793171 [debug] [MainThread]: Partial parsing enabled, no changes found, skipping parsing
+[0m22:06:52.823000 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'load_project', 'label': '2e255ff8-6a8b-44a3-8f34-786b4e058606', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7bfd3a094eb0>]}
+[0m22:06:52.948704 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'resource_counts', 'label': '2e255ff8-6a8b-44a3-8f34-786b4e058606', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7bfce4b66400>]}
+[0m22:06:52.949219 [info ] [MainThread]: Found 11 models, 5 sources, 454 macros
+[0m22:06:52.949569 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'runnable_timing', 'label': '2e255ff8-6a8b-44a3-8f34-786b4e058606', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7bfd3a074ac0>]}
+[0m22:06:52.950891 [info ] [MainThread]: 
+[0m22:06:52.951381 [debug] [MainThread]: Acquiring new snowflake connection 'master'
+[0m22:06:52.955339 [debug] [ThreadPool]: Acquiring new snowflake connection 'list_ALFA_PROJEKT'
+[0m22:06:52.962403 [debug] [ThreadPool]: Acquiring new snowflake connection 'list_ALFA_PROJEKT'
+[0m22:06:52.967122 [debug] [ThreadPool]: Using snowflake connection "list_ALFA_PROJEKT"
+[0m22:06:52.969027 [debug] [ThreadPool]: Using snowflake connection "list_ALFA_PROJEKT"
+[0m22:06:52.969471 [debug] [ThreadPool]: On list_ALFA_PROJEKT: /* {"app": "dbt", "dbt_version": "1.8.7", "profile_name": "dbt_alfa", "target_name": "dev", "connection_name": "list_ALFA_PROJEKT"} */
+show terse schemas in database ALFA_PROJEKT
+    limit 10000
+[0m22:06:52.969829 [debug] [ThreadPool]: On list_ALFA_PROJEKT: /* {"app": "dbt", "dbt_version": "1.8.7", "profile_name": "dbt_alfa", "target_name": "dev", "connection_name": "list_ALFA_PROJEKT"} */
+show terse schemas in database ALFA_PROJEKT
+    limit 10000
+[0m22:06:52.970158 [debug] [ThreadPool]: Opening a new connection, currently in state init
+[0m22:06:52.970469 [debug] [ThreadPool]: Opening a new connection, currently in state init
+[0m22:06:53.881435 [debug] [ThreadPool]: Snowflake adapter: Error running SQL: /* {"app": "dbt", "dbt_version": "1.8.7", "profile_name": "dbt_alfa", "target_name": "dev", "connection_name": "list_ALFA_PROJEKT"} */
+show terse schemas in database ALFA_PROJEKT
+    limit 10000
+[0m22:06:53.882170 [debug] [ThreadPool]: Snowflake adapter: Rolling back transaction.
+[0m22:06:53.882658 [debug] [ThreadPool]: Snowflake adapter: Error running SQL: macro list_schemas
+[0m22:06:53.882952 [debug] [ThreadPool]: Snowflake adapter: Rolling back transaction.
+[0m22:06:53.883333 [debug] [ThreadPool]: On list_ALFA_PROJEKT: No close available on handle
+[0m22:06:53.908840 [debug] [ThreadPool]: Snowflake adapter: Error running SQL: /* {"app": "dbt", "dbt_version": "1.8.7", "profile_name": "dbt_alfa", "target_name": "dev", "connection_name": "list_ALFA_PROJEKT"} */
+show terse schemas in database ALFA_PROJEKT
+    limit 10000
+[0m22:06:53.909253 [debug] [ThreadPool]: Snowflake adapter: Rolling back transaction.
+[0m22:06:53.909752 [debug] [ThreadPool]: Snowflake adapter: Error running SQL: macro list_schemas
+[0m22:06:53.910065 [debug] [ThreadPool]: Snowflake adapter: Rolling back transaction.
+[0m22:06:53.910458 [debug] [ThreadPool]: On list_ALFA_PROJEKT: No close available on handle
+[0m22:06:53.911058 [debug] [MainThread]: Connection 'master' was properly closed.
+[0m22:06:53.911342 [debug] [MainThread]: Connection 'list_ALFA_PROJEKT' was properly closed.
+[0m22:06:53.911602 [debug] [MainThread]: Connection 'list_ALFA_PROJEKT' was properly closed.
+[0m22:06:53.911939 [info ] [MainThread]: 
+[0m22:06:53.912323 [info ] [MainThread]: Finished running  in 0 hours 0 minutes and 0.96 seconds (0.96s).
+[0m22:06:53.912918 [error] [MainThread]: Encountered an error:
+Runtime Error
+  Database error while listing schemas in database "ALFA_PROJEKT"
+  Database Error
+    250001 (08001): Failed to connect to DB: lraixsh-yh49291.snowflakecomputing.com:443. Incorrect username or password was specified.
+[0m22:06:53.913712 [debug] [MainThread]: Resource report: {"command_name": "run", "command_wall_clock_time": 1.9276253, "process_user_time": 2.165402, "process_kernel_time": 1.92259, "process_mem_max_rss": "201688", "process_in_blocks": "16", "process_out_blocks": "1000", "command_success": false}
+[0m22:06:53.914333 [debug] [MainThread]: Command `dbt run` failed at 22:06:53.914235 after 1.93 seconds
+[0m22:06:53.914720 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7bfd3fd4f4c0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7bfce4b034f0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7bfd3a0141c0>]}
+[0m22:06:53.915093 [debug] [MainThread]: Flushing usage events
+[0m22:10:32.935085 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7d8bcfb09400>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7d8bcd887c70>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7d8bcd8874c0>]}
+
+
+============================== 22:10:32.941419 | f2340cc5-0dac-4eaa-a638-9bf0ee35abd8 ==============================
+[0m22:10:32.941419 [info ] [MainThread]: Running with dbt=1.8.7
+[0m22:10:32.941884 [debug] [MainThread]: running dbt with arguments {'printer_width': '80', 'indirect_selection': 'eager', 'write_json': 'True', 'log_cache_events': 'False', 'partial_parse': 'True', 'cache_selected_only': 'False', 'profiles_dir': '/opt/airflow', 'version_check': 'True', 'debug': 'False', 'log_path': '/opt/airflow/dbt_alfa/logs', 'fail_fast': 'False', 'warn_error': 'None', 'use_colors': 'True', 'use_experimental_parser': 'False', 'empty': 'False', 'quiet': 'False', 'no_print': 'None', 'log_format': 'default', 'introspect': 'True', 'invocation_command': 'dbt run', 'warn_error_options': 'WarnErrorOptions(include=[], exclude=[])', 'target_path': 'None', 'static_parser': 'True', 'send_anonymous_usage_stats': 'True'}
+[0m22:10:33.900910 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'project_id', 'label': 'f2340cc5-0dac-4eaa-a638-9bf0ee35abd8', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7d8b753fb310>]}
+[0m22:10:33.937143 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'adapter_info', 'label': 'f2340cc5-0dac-4eaa-a638-9bf0ee35abd8', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7d8bce637640>]}
+[0m22:10:33.938062 [info ] [MainThread]: Registered adapter: snowflake=1.8.4
+[0m22:10:33.955407 [debug] [MainThread]: checksum: 4af21dafb485259c48497ac86b711ddb1982f3d0f1c0ca4e09356de488b753c0, vars: {}, profile: , target: , version: 1.8.7
+[0m22:10:34.082532 [debug] [MainThread]: Partial parsing enabled: 0 files deleted, 0 files added, 0 files changed.
+[0m22:10:34.082932 [debug] [MainThread]: Partial parsing enabled, no changes found, skipping parsing
+[0m22:10:34.109524 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'load_project', 'label': 'f2340cc5-0dac-4eaa-a638-9bf0ee35abd8', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7d8bc9d05f10>]}
+[0m22:10:34.246831 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'resource_counts', 'label': 'f2340cc5-0dac-4eaa-a638-9bf0ee35abd8', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7d8bc9ce1df0>]}
+[0m22:10:34.247318 [info ] [MainThread]: Found 11 models, 5 sources, 454 macros
+[0m22:10:34.247687 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'runnable_timing', 'label': 'f2340cc5-0dac-4eaa-a638-9bf0ee35abd8', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7d8bc9e5faf0>]}
+[0m22:10:34.249390 [info ] [MainThread]: 
+[0m22:10:34.249929 [debug] [MainThread]: Acquiring new snowflake connection 'master'
+[0m22:10:34.254087 [debug] [ThreadPool]: Acquiring new snowflake connection 'list_ALFA_PROJEKT'
+[0m22:10:34.261131 [debug] [ThreadPool]: Acquiring new snowflake connection 'list_ALFA_PROJEKT'
+[0m22:10:34.266042 [debug] [ThreadPool]: Using snowflake connection "list_ALFA_PROJEKT"
+[0m22:10:34.268385 [debug] [ThreadPool]: Using snowflake connection "list_ALFA_PROJEKT"
+[0m22:10:34.268736 [debug] [ThreadPool]: On list_ALFA_PROJEKT: /* {"app": "dbt", "dbt_version": "1.8.7", "profile_name": "dbt_alfa", "target_name": "dev", "connection_name": "list_ALFA_PROJEKT"} */
+show terse schemas in database ALFA_PROJEKT
+    limit 10000
+[0m22:10:34.269078 [debug] [ThreadPool]: On list_ALFA_PROJEKT: /* {"app": "dbt", "dbt_version": "1.8.7", "profile_name": "dbt_alfa", "target_name": "dev", "connection_name": "list_ALFA_PROJEKT"} */
+show terse schemas in database ALFA_PROJEKT
+    limit 10000
+[0m22:10:34.269411 [debug] [ThreadPool]: Opening a new connection, currently in state init
+[0m22:10:34.269730 [debug] [ThreadPool]: Opening a new connection, currently in state init
+[0m22:10:35.464685 [debug] [ThreadPool]: Snowflake adapter: Error running SQL: /* {"app": "dbt", "dbt_version": "1.8.7", "profile_name": "dbt_alfa", "target_name": "dev", "connection_name": "list_ALFA_PROJEKT"} */
+show terse schemas in database ALFA_PROJEKT
+    limit 10000
+[0m22:10:35.465225 [debug] [ThreadPool]: Snowflake adapter: Rolling back transaction.
+[0m22:10:35.465745 [debug] [ThreadPool]: Snowflake adapter: Error running SQL: macro list_schemas
+[0m22:10:35.466032 [debug] [ThreadPool]: Snowflake adapter: Rolling back transaction.
+[0m22:10:35.466421 [debug] [ThreadPool]: On list_ALFA_PROJEKT: No close available on handle
+[0m22:10:35.478152 [debug] [ThreadPool]: Snowflake adapter: Error running SQL: /* {"app": "dbt", "dbt_version": "1.8.7", "profile_name": "dbt_alfa", "target_name": "dev", "connection_name": "list_ALFA_PROJEKT"} */
+show terse schemas in database ALFA_PROJEKT
+    limit 10000
+[0m22:10:35.478493 [debug] [ThreadPool]: Snowflake adapter: Rolling back transaction.
+[0m22:10:35.478853 [debug] [ThreadPool]: Snowflake adapter: Error running SQL: macro list_schemas
+[0m22:10:35.479135 [debug] [ThreadPool]: Snowflake adapter: Rolling back transaction.
+[0m22:10:35.479471 [debug] [ThreadPool]: On list_ALFA_PROJEKT: No close available on handle
+[0m22:10:35.480105 [debug] [MainThread]: Connection 'master' was properly closed.
+[0m22:10:35.480411 [debug] [MainThread]: Connection 'list_ALFA_PROJEKT' was properly closed.
+[0m22:10:35.480701 [debug] [MainThread]: Connection 'list_ALFA_PROJEKT' was properly closed.
+[0m22:10:35.481059 [info ] [MainThread]: 
+[0m22:10:35.481428 [info ] [MainThread]: Finished running  in 0 hours 0 minutes and 1.23 seconds (1.23s).
+[0m22:10:35.481971 [error] [MainThread]: Encountered an error:
+Runtime Error
+  Database error while listing schemas in database "ALFA_PROJEKT"
+  Database Error
+    250001 (08001): Failed to connect to DB: lraixsh-yh49291.snowflakecomputing.com:443. Your user account has been temporarily locked. Try again later or contact your account administrator for assistance. For more information about this error, go to https://community.snowflake.com/s/error-your-user-login-has-been-locked.
+[0m22:10:35.483084 [debug] [MainThread]: Resource report: {"command_name": "run", "command_wall_clock_time": 2.5861948, "process_user_time": 3.005756, "process_kernel_time": 2.245453, "process_mem_max_rss": "234084", "process_in_blocks": "118760", "process_out_blocks": "11016", "command_success": false}
+[0m22:10:35.483612 [debug] [MainThread]: Command `dbt run` failed at 22:10:35.483528 after 2.59 seconds
+[0m22:10:35.483976 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7d8bcfb09400>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7d8bc9d6eeb0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7d8b6d0dc130>]}
+[0m22:10:35.484344 [debug] [MainThread]: Flushing usage events
+[0m22:15:39.380707 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7caf2ab3f070>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7caf2899d070>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7caf2899de20>]}
+
+
+============================== 22:15:39.386238 | fd260746-4755-4cae-81cb-69807d9d5a45 ==============================
+[0m22:15:39.386238 [info ] [MainThread]: Running with dbt=1.8.7
+[0m22:15:39.386720 [debug] [MainThread]: running dbt with arguments {'printer_width': '80', 'indirect_selection': 'eager', 'write_json': 'True', 'log_cache_events': 'False', 'partial_parse': 'True', 'cache_selected_only': 'False', 'profiles_dir': '/opt/airflow', 'debug': 'False', 'fail_fast': 'False', 'log_path': '/opt/airflow/dbt_alfa/logs', 'warn_error': 'None', 'version_check': 'True', 'use_colors': 'True', 'use_experimental_parser': 'False', 'empty': 'False', 'quiet': 'False', 'no_print': 'None', 'log_format': 'default', 'static_parser': 'True', 'invocation_command': 'dbt run', 'introspect': 'True', 'target_path': 'None', 'warn_error_options': 'WarnErrorOptions(include=[], exclude=[])', 'send_anonymous_usage_stats': 'True'}
+[0m22:15:40.318151 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'project_id', 'label': 'fd260746-4755-4cae-81cb-69807d9d5a45', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7caed0077700>]}
+[0m22:15:40.356643 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'adapter_info', 'label': 'fd260746-4755-4cae-81cb-69807d9d5a45', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7caf28a25970>]}
+[0m22:15:40.357607 [info ] [MainThread]: Registered adapter: snowflake=1.8.4
+[0m22:15:40.374521 [debug] [MainThread]: checksum: 4af21dafb485259c48497ac86b711ddb1982f3d0f1c0ca4e09356de488b753c0, vars: {}, profile: , target: , version: 1.8.7
+[0m22:15:40.497830 [debug] [MainThread]: Partial parsing enabled: 0 files deleted, 0 files added, 0 files changed.
+[0m22:15:40.498265 [debug] [MainThread]: Partial parsing enabled, no changes found, skipping parsing
+[0m22:15:40.526526 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'load_project', 'label': 'fd260746-4755-4cae-81cb-69807d9d5a45', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7caf24e72df0>]}
+[0m22:15:40.659140 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'resource_counts', 'label': 'fd260746-4755-4cae-81cb-69807d9d5a45', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7caed00b0430>]}
+[0m22:15:40.659615 [info ] [MainThread]: Found 11 models, 5 sources, 454 macros
+[0m22:15:40.659951 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'runnable_timing', 'label': 'fd260746-4755-4cae-81cb-69807d9d5a45', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7caf24e74e50>]}
+[0m22:15:40.661304 [info ] [MainThread]: 
+[0m22:15:40.661779 [debug] [MainThread]: Acquiring new snowflake connection 'master'
+[0m22:15:40.665736 [debug] [ThreadPool]: Acquiring new snowflake connection 'list_ALFA_PROJEKT'
+[0m22:15:40.672761 [debug] [ThreadPool]: Acquiring new snowflake connection 'list_ALFA_PROJEKT'
+[0m22:15:40.676881 [debug] [ThreadPool]: Using snowflake connection "list_ALFA_PROJEKT"
+[0m22:15:40.678541 [debug] [ThreadPool]: Using snowflake connection "list_ALFA_PROJEKT"
+[0m22:15:40.678871 [debug] [ThreadPool]: On list_ALFA_PROJEKT: /* {"app": "dbt", "dbt_version": "1.8.7", "profile_name": "dbt_alfa", "target_name": "dev", "connection_name": "list_ALFA_PROJEKT"} */
+show terse schemas in database ALFA_PROJEKT
+    limit 10000
+[0m22:15:40.679209 [debug] [ThreadPool]: On list_ALFA_PROJEKT: /* {"app": "dbt", "dbt_version": "1.8.7", "profile_name": "dbt_alfa", "target_name": "dev", "connection_name": "list_ALFA_PROJEKT"} */
+show terse schemas in database ALFA_PROJEKT
+    limit 10000
+[0m22:15:40.679546 [debug] [ThreadPool]: Opening a new connection, currently in state init
+[0m22:15:40.679859 [debug] [ThreadPool]: Opening a new connection, currently in state init
+[0m22:15:40.926281 [debug] [ThreadPool]: Snowflake adapter: Error running SQL: /* {"app": "dbt", "dbt_version": "1.8.7", "profile_name": "dbt_alfa", "target_name": "dev", "connection_name": "list_ALFA_PROJEKT"} */
+show terse schemas in database ALFA_PROJEKT
+    limit 10000
+[0m22:15:40.927243 [debug] [ThreadPool]: Snowflake adapter: Rolling back transaction.
+[0m22:15:40.927821 [debug] [ThreadPool]: Snowflake adapter: Error running SQL: /* {"app": "dbt", "dbt_version": "1.8.7", "profile_name": "dbt_alfa", "target_name": "dev", "connection_name": "list_ALFA_PROJEKT"} */
+show terse schemas in database ALFA_PROJEKT
+    limit 10000
+[0m22:15:40.928304 [debug] [ThreadPool]: Snowflake adapter: Error running SQL: macro list_schemas
+[0m22:15:40.928633 [debug] [ThreadPool]: Snowflake adapter: Rolling back transaction.
+[0m22:15:40.929017 [debug] [ThreadPool]: Snowflake adapter: Rolling back transaction.
+[0m22:15:40.929413 [debug] [ThreadPool]: Snowflake adapter: Error running SQL: macro list_schemas
+[0m22:15:40.929916 [debug] [ThreadPool]: On list_ALFA_PROJEKT: No close available on handle
+[0m22:15:40.930242 [debug] [ThreadPool]: Snowflake adapter: Rolling back transaction.
+[0m22:15:40.931206 [debug] [ThreadPool]: On list_ALFA_PROJEKT: No close available on handle
+[0m22:15:40.931722 [debug] [MainThread]: Connection 'master' was properly closed.
+[0m22:15:40.932006 [debug] [MainThread]: Connection 'list_ALFA_PROJEKT' was properly closed.
+[0m22:15:40.932277 [debug] [MainThread]: Connection 'list_ALFA_PROJEKT' was properly closed.
+[0m22:15:40.932612 [info ] [MainThread]: 
+[0m22:15:40.933060 [info ] [MainThread]: Finished running  in 0 hours 0 minutes and 0.27 seconds (0.27s).
+[0m22:15:40.933699 [error] [MainThread]: Encountered an error:
+Runtime Error
+  Database error while listing schemas in database "ALFA_PROJEKT"
+  Database Error
+    250001 (08001): Failed to connect to DB: lraixsh-yh49291.snowflakecomputing.com:443. Your user account has been temporarily locked. Try again later or contact your account administrator for assistance. For more information about this error, go to https://community.snowflake.com/s/error-your-user-login-has-been-locked.
+[0m22:15:40.934705 [debug] [MainThread]: Resource report: {"command_name": "run", "command_wall_clock_time": 1.5876886, "process_user_time": 2.017454, "process_kernel_time": 2.207705, "process_mem_max_rss": "202136", "process_in_blocks": "106928", "process_out_blocks": "992", "command_success": false}
+[0m22:15:40.935238 [debug] [MainThread]: Command `dbt run` failed at 22:15:40.935150 after 1.59 seconds
+[0m22:15:40.935599 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7caf2ab3f070>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7caf24e74e50>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7caf2a80e3a0>]}
+[0m22:15:40.935988 [debug] [MainThread]: Flushing usage events
+[0m23:03:20.162630 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7287fb3ba370>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7287fa604610>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7287f91da040>]}
+
+
+============================== 23:03:20.167244 | 7622978f-e89f-4b9f-bf56-8d272ad14653 ==============================
+[0m23:03:20.167244 [info ] [MainThread]: Running with dbt=1.8.7
+[0m23:03:20.167700 [debug] [MainThread]: running dbt with arguments {'printer_width': '80', 'indirect_selection': 'eager', 'log_cache_events': 'False', 'write_json': 'True', 'partial_parse': 'True', 'cache_selected_only': 'False', 'warn_error': 'None', 'version_check': 'True', 'profiles_dir': '/opt/airflow', 'log_path': '/opt/airflow/dbt_alfa/logs', 'debug': 'False', 'fail_fast': 'False', 'use_colors': 'True', 'use_experimental_parser': 'False', 'no_print': 'None', 'quiet': 'False', 'empty': 'False', 'warn_error_options': 'WarnErrorOptions(include=[], exclude=[])', 'static_parser': 'True', 'introspect': 'True', 'invocation_command': 'dbt run', 'target_path': 'None', 'log_format': 'default', 'send_anonymous_usage_stats': 'True'}
+[0m23:03:20.760162 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'project_id', 'label': '7622978f-e89f-4b9f-bf56-8d272ad14653', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7287a016cdc0>]}
+[0m23:03:20.796369 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'adapter_info', 'label': '7622978f-e89f-4b9f-bf56-8d272ad14653', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7287f9a18760>]}
+[0m23:03:20.797083 [info ] [MainThread]: Registered adapter: snowflake=1.8.4
+[0m23:03:20.812532 [debug] [MainThread]: checksum: 4af21dafb485259c48497ac86b711ddb1982f3d0f1c0ca4e09356de488b753c0, vars: {}, profile: , target: , version: 1.8.7
+[0m23:03:20.898329 [debug] [MainThread]: Partial parsing enabled: 0 files deleted, 0 files added, 0 files changed.
+[0m23:03:20.898890 [debug] [MainThread]: Partial parsing enabled, no changes found, skipping parsing
+[0m23:03:20.930166 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'load_project', 'label': '7622978f-e89f-4b9f-bf56-8d272ad14653', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7287f56c0f40>]}
+[0m23:03:21.053482 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'resource_counts', 'label': '7622978f-e89f-4b9f-bf56-8d272ad14653', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7287a01c2e20>]}
+[0m23:03:21.053960 [info ] [MainThread]: Found 11 models, 5 sources, 454 macros
+[0m23:03:21.054296 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'runnable_timing', 'label': '7622978f-e89f-4b9f-bf56-8d272ad14653', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7287fa55a6d0>]}
+[0m23:03:21.055615 [info ] [MainThread]: 
+[0m23:03:21.056110 [debug] [MainThread]: Acquiring new snowflake connection 'master'
+[0m23:03:21.059943 [debug] [ThreadPool]: Acquiring new snowflake connection 'list_ALFA_PROJEKT'
+[0m23:03:21.067268 [debug] [ThreadPool]: Acquiring new snowflake connection 'list_ALFA_PROJEKT'
+[0m23:03:21.071938 [debug] [ThreadPool]: Using snowflake connection "list_ALFA_PROJEKT"
+[0m23:03:21.073981 [debug] [ThreadPool]: Using snowflake connection "list_ALFA_PROJEKT"
+[0m23:03:21.074334 [debug] [ThreadPool]: On list_ALFA_PROJEKT: /* {"app": "dbt", "dbt_version": "1.8.7", "profile_name": "dbt_alfa", "target_name": "dev", "connection_name": "list_ALFA_PROJEKT"} */
+show terse schemas in database ALFA_PROJEKT
+    limit 10000
+[0m23:03:21.074663 [debug] [ThreadPool]: On list_ALFA_PROJEKT: /* {"app": "dbt", "dbt_version": "1.8.7", "profile_name": "dbt_alfa", "target_name": "dev", "connection_name": "list_ALFA_PROJEKT"} */
+show terse schemas in database ALFA_PROJEKT
+    limit 10000
+[0m23:03:21.074993 [debug] [ThreadPool]: Opening a new connection, currently in state init
+[0m23:03:21.075305 [debug] [ThreadPool]: Opening a new connection, currently in state init
+[0m23:03:21.979143 [debug] [ThreadPool]: SQL status: SUCCESS 7 in 0.904 seconds
+[0m23:03:21.980000 [debug] [ThreadPool]: SQL status: SUCCESS 7 in 0.905 seconds
+[0m23:03:21.981826 [debug] [ThreadPool]: On list_ALFA_PROJEKT: Close
+[0m23:03:21.982932 [debug] [ThreadPool]: On list_ALFA_PROJEKT: Close
+[0m23:03:22.054402 [debug] [ThreadPool]: Re-using an available connection from the pool (formerly list_ALFA_PROJEKT, now list_ALFA_PROJEKT_SILVER_GOLD)
+[0m23:03:22.055076 [debug] [ThreadPool]: Re-using an available connection from the pool (formerly list_ALFA_PROJEKT, now list_ALFA_PROJEKT_SILVER_SILVER)
+[0m23:03:22.068801 [debug] [ThreadPool]: Using snowflake connection "list_ALFA_PROJEKT_SILVER_GOLD"
+[0m23:03:22.070357 [debug] [ThreadPool]: Using snowflake connection "list_ALFA_PROJEKT_SILVER_SILVER"
+[0m23:03:22.070662 [debug] [ThreadPool]: On list_ALFA_PROJEKT_SILVER_GOLD: /* {"app": "dbt", "dbt_version": "1.8.7", "profile_name": "dbt_alfa", "target_name": "dev", "connection_name": "list_ALFA_PROJEKT_SILVER_GOLD"} */
+show objects in ALFA_PROJEKT.SILVER_GOLD limit 10000
+[0m23:03:22.071018 [debug] [ThreadPool]: On list_ALFA_PROJEKT_SILVER_SILVER: /* {"app": "dbt", "dbt_version": "1.8.7", "profile_name": "dbt_alfa", "target_name": "dev", "connection_name": "list_ALFA_PROJEKT_SILVER_SILVER"} */
+show objects in ALFA_PROJEKT.SILVER_SILVER limit 10000
+[0m23:03:22.071363 [debug] [ThreadPool]: Opening a new connection, currently in state closed
+[0m23:03:22.071691 [debug] [ThreadPool]: Opening a new connection, currently in state closed
+[0m23:03:22.339038 [debug] [ThreadPool]: SQL status: SUCCESS 4 in 0.268 seconds
+[0m23:03:22.340611 [debug] [ThreadPool]: On list_ALFA_PROJEKT_SILVER_GOLD: Close
+[0m23:03:22.374524 [debug] [ThreadPool]: SQL status: SUCCESS 5 in 0.303 seconds
+[0m23:03:22.376176 [debug] [ThreadPool]: On list_ALFA_PROJEKT_SILVER_SILVER: Close
+[0m23:03:22.443900 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'runnable_timing', 'label': '7622978f-e89f-4b9f-bf56-8d272ad14653', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7287f5711be0>]}
+[0m23:03:22.444581 [info ] [MainThread]: Concurrency: 4 threads (target='dev')
+[0m23:03:22.445041 [info ] [MainThread]: 
+[0m23:03:22.453398 [debug] [Thread-2  ]: Began running node model.dbt_alfa.stg_orders
+[0m23:03:22.453823 [debug] [Thread-3  ]: Began running node model.dbt_alfa.stg_payroll
+[0m23:03:22.454677 [debug] [Thread-4  ]: Began running node model.dbt_alfa.stg_products
+[0m23:03:22.455097 [debug] [Thread-1  ]: Began running node model.dbt_alfa.stg_employees
+[0m23:03:22.454353 [info ] [Thread-2  ]: 2 of 11 START sql view model SILVER_SILVER.stg_orders .......................... [RUN]
+[0m23:03:22.455703 [info ] [Thread-3  ]: 3 of 11 START sql view model SILVER_SILVER.stg_payroll ......................... [RUN]
+[0m23:03:22.456223 [info ] [Thread-4  ]: 4 of 11 START sql view model SILVER_SILVER.stg_products ........................ [RUN]
+[0m23:03:22.456763 [info ] [Thread-1  ]: 1 of 11 START sql view model SILVER_SILVER.stg_employees ....................... [RUN]
+[0m23:03:22.457278 [debug] [Thread-2  ]: Re-using an available connection from the pool (formerly list_ALFA_PROJEKT_SILVER_GOLD, now model.dbt_alfa.stg_orders)
+[0m23:03:22.457738 [debug] [Thread-3  ]: Acquiring new snowflake connection 'model.dbt_alfa.stg_payroll'
+[0m23:03:22.458188 [debug] [Thread-4  ]: Acquiring new snowflake connection 'model.dbt_alfa.stg_products'
+[0m23:03:22.458567 [debug] [Thread-1  ]: Re-using an available connection from the pool (formerly list_ALFA_PROJEKT_SILVER_SILVER, now model.dbt_alfa.stg_employees)
+[0m23:03:22.458937 [debug] [Thread-2  ]: Began compiling node model.dbt_alfa.stg_orders
+[0m23:03:22.459297 [debug] [Thread-3  ]: Began compiling node model.dbt_alfa.stg_payroll
+[0m23:03:22.459666 [debug] [Thread-4  ]: Began compiling node model.dbt_alfa.stg_products
+[0m23:03:22.460023 [debug] [Thread-1  ]: Began compiling node model.dbt_alfa.stg_employees
+[0m23:03:22.466204 [debug] [Thread-2  ]: Writing injected SQL for node "model.dbt_alfa.stg_orders"
+[0m23:03:22.468294 [debug] [Thread-3  ]: Writing injected SQL for node "model.dbt_alfa.stg_payroll"
+[0m23:03:22.470673 [debug] [Thread-4  ]: Writing injected SQL for node "model.dbt_alfa.stg_products"
+[0m23:03:22.472748 [debug] [Thread-1  ]: Writing injected SQL for node "model.dbt_alfa.stg_employees"
+[0m23:03:22.476508 [debug] [Thread-2  ]: Began executing node model.dbt_alfa.stg_orders
+[0m23:03:22.477101 [debug] [Thread-3  ]: Began executing node model.dbt_alfa.stg_payroll
+[0m23:03:22.477433 [debug] [Thread-4  ]: Began executing node model.dbt_alfa.stg_products
+[0m23:03:22.507877 [debug] [Thread-2  ]: Writing runtime sql for node "model.dbt_alfa.stg_orders"
+[0m23:03:22.508304 [debug] [Thread-1  ]: Began executing node model.dbt_alfa.stg_employees
+[0m23:03:22.509842 [debug] [Thread-3  ]: Writing runtime sql for node "model.dbt_alfa.stg_payroll"
+[0m23:03:22.512441 [debug] [Thread-4  ]: Writing runtime sql for node "model.dbt_alfa.stg_products"
+[0m23:03:22.514948 [debug] [Thread-1  ]: Writing runtime sql for node "model.dbt_alfa.stg_employees"
+[0m23:03:22.517005 [debug] [Thread-4  ]: Using snowflake connection "model.dbt_alfa.stg_products"
+[0m23:03:22.517810 [debug] [Thread-1  ]: Using snowflake connection "model.dbt_alfa.stg_employees"
+[0m23:03:22.518330 [debug] [Thread-4  ]: On model.dbt_alfa.stg_products: /* {"app": "dbt", "dbt_version": "1.8.7", "profile_name": "dbt_alfa", "target_name": "dev", "node_id": "model.dbt_alfa.stg_products"} */
+create or replace   view ALFA_PROJEKT.SILVER_SILVER.stg_products
+  
+   as (
+    SELECT PRODUCT_ID, NAME AS PRODUCT_NAME, CATEGORY, SUBCATEGORY, BASE_PRICE, UNIT_COST FROM ALFA_PROJEKT.RAW.DIM_PRODUCTS
+  );
+[0m23:03:22.519067 [debug] [Thread-2  ]: Using snowflake connection "model.dbt_alfa.stg_orders"
+[0m23:03:22.519383 [debug] [Thread-1  ]: On model.dbt_alfa.stg_employees: /* {"app": "dbt", "dbt_version": "1.8.7", "profile_name": "dbt_alfa", "target_name": "dev", "node_id": "model.dbt_alfa.stg_employees"} */
+create or replace   view ALFA_PROJEKT.SILVER_SILVER.stg_employees
+  
+   as (
+    SELECT EMPLOYEE_ID, NAME AS EMPLOYEE_NAME, GENDER, CURRENT_AGE, HIRE_DATE::DATE AS HIRE_DATE, COALESCE(EXIT_DATE::DATE, '9999-12-31') AS EXIT_DATE FROM ALFA_PROJEKT.RAW.DIM_EMPLOYEES
+  );
+[0m23:03:22.519858 [debug] [Thread-3  ]: Using snowflake connection "model.dbt_alfa.stg_payroll"
+[0m23:03:22.520204 [debug] [Thread-4  ]: Opening a new connection, currently in state init
+[0m23:03:22.520565 [debug] [Thread-2  ]: On model.dbt_alfa.stg_orders: /* {"app": "dbt", "dbt_version": "1.8.7", "profile_name": "dbt_alfa", "target_name": "dev", "node_id": "model.dbt_alfa.stg_orders"} */
+create or replace   view ALFA_PROJEKT.SILVER_SILVER.stg_orders
+  
+   as (
+    SELECT ORDER_ID, PRODUCT_ID, QUANTITY, CASE WHEN SERVICE_TYPE = 'None' THEN NULL ELSE SERVICE_TYPE END AS SERVICE_TYPE, COALESCE(SERVICE_PRICE, 0) AS SERVICE_PRICE, EMPLOYEE_ID, ORDER_DATE::TIMESTAMP AS ORDER_TIMESTAMP FROM ALFA_PROJEKT.RAW.FACT_ORDERS
+  );
+[0m23:03:22.520979 [debug] [Thread-1  ]: Opening a new connection, currently in state closed
+[0m23:03:22.521336 [debug] [Thread-3  ]: On model.dbt_alfa.stg_payroll: /* {"app": "dbt", "dbt_version": "1.8.7", "profile_name": "dbt_alfa", "target_name": "dev", "node_id": "model.dbt_alfa.stg_payroll"} */
+create or replace   view ALFA_PROJEKT.SILVER_SILVER.stg_payroll
+  
+   as (
+    SELECT EMPLOYEE_ID, MONTHLY_SALARY, MONTH_YEAR::DATE AS PAYROLL_MONTH FROM ALFA_PROJEKT.RAW.FACT_PAYROLL
+  );
+[0m23:03:22.522430 [debug] [Thread-2  ]: Opening a new connection, currently in state closed
+[0m23:03:22.524270 [debug] [Thread-3  ]: Opening a new connection, currently in state init
+[0m23:03:22.902051 [debug] [Thread-1  ]: SQL status: SUCCESS 1 in 0.381 seconds
+[0m23:03:22.921167 [debug] [Thread-1  ]: On model.dbt_alfa.stg_employees: Close
+[0m23:03:22.947093 [debug] [Thread-4  ]: SQL status: SUCCESS 1 in 0.427 seconds
+[0m23:03:22.948936 [debug] [Thread-4  ]: On model.dbt_alfa.stg_products: Close
+[0m23:03:22.955464 [debug] [Thread-3  ]: SQL status: SUCCESS 1 in 0.431 seconds
+[0m23:03:22.958289 [debug] [Thread-3  ]: On model.dbt_alfa.stg_payroll: Close
+[0m23:03:22.960580 [debug] [Thread-2  ]: SQL status: SUCCESS 1 in 0.438 seconds
+[0m23:03:22.962382 [debug] [Thread-2  ]: On model.dbt_alfa.stg_orders: Close
+[0m23:03:22.991134 [debug] [Thread-1  ]: Sending event: {'category': 'dbt', 'action': 'run_model', 'label': '7622978f-e89f-4b9f-bf56-8d272ad14653', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7287f5711be0>]}
+[0m23:03:22.992032 [info ] [Thread-1  ]: 1 of 11 OK created sql view model SILVER_SILVER.stg_employees .................. [[32mSUCCESS 1[0m in 0.53s]
+[0m23:03:22.993592 [debug] [Thread-1  ]: Finished running node model.dbt_alfa.stg_employees
+[0m23:03:22.994237 [debug] [Thread-1  ]: Began running node model.dbt_alfa.stg_traffic
+[0m23:03:22.994711 [info ] [Thread-1  ]: 5 of 11 START sql view model SILVER_SILVER.stg_traffic ......................... [RUN]
+[0m23:03:22.995593 [debug] [Thread-1  ]: Re-using an available connection from the pool (formerly model.dbt_alfa.stg_employees, now model.dbt_alfa.stg_traffic)
+[0m23:03:22.996055 [debug] [Thread-1  ]: Began compiling node model.dbt_alfa.stg_traffic
+[0m23:03:22.998811 [debug] [Thread-1  ]: Writing injected SQL for node "model.dbt_alfa.stg_traffic"
+[0m23:03:22.999467 [debug] [Thread-1  ]: Began executing node model.dbt_alfa.stg_traffic
+[0m23:03:23.002001 [debug] [Thread-1  ]: Writing runtime sql for node "model.dbt_alfa.stg_traffic"
+[0m23:03:23.002635 [debug] [Thread-1  ]: Using snowflake connection "model.dbt_alfa.stg_traffic"
+[0m23:03:23.002964 [debug] [Thread-1  ]: On model.dbt_alfa.stg_traffic: /* {"app": "dbt", "dbt_version": "1.8.7", "profile_name": "dbt_alfa", "target_name": "dev", "node_id": "model.dbt_alfa.stg_traffic"} */
+create or replace   view ALFA_PROJEKT.SILVER_SILVER.stg_traffic
+  
+   as (
+    SELECT TRAFFIC_ID, EVENT_TIME::TIMESTAMP AS EVENT_TIMESTAMP, ITEM_IN_CART, PRODUCT_ID, ORDER_ID FROM ALFA_PROJEKT.RAW.FACT_TRAFFIC
+  );
+[0m23:03:23.003517 [debug] [Thread-1  ]: Opening a new connection, currently in state closed
+[0m23:03:23.016118 [debug] [Thread-4  ]: Sending event: {'category': 'dbt', 'action': 'run_model', 'label': '7622978f-e89f-4b9f-bf56-8d272ad14653', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7287f5176130>]}
+[0m23:03:23.016930 [info ] [Thread-4  ]: 4 of 11 OK created sql view model SILVER_SILVER.stg_products ................... [[32mSUCCESS 1[0m in 0.56s]
+[0m23:03:23.017605 [debug] [Thread-4  ]: Finished running node model.dbt_alfa.stg_products
+[0m23:03:23.018023 [debug] [Thread-4  ]: Began running node model.dbt_alfa.dim_employees_gold
+[0m23:03:23.018651 [info ] [Thread-4  ]: 6 of 11 START sql table model SILVER_GOLD.dim_employees_gold ................... [RUN]
+[0m23:03:23.019135 [debug] [Thread-4  ]: Re-using an available connection from the pool (formerly model.dbt_alfa.stg_products, now model.dbt_alfa.dim_employees_gold)
+[0m23:03:23.019461 [debug] [Thread-4  ]: Began compiling node model.dbt_alfa.dim_employees_gold
+[0m23:03:23.022135 [debug] [Thread-4  ]: Writing injected SQL for node "model.dbt_alfa.dim_employees_gold"
+[0m23:03:23.023178 [debug] [Thread-4  ]: Began executing node model.dbt_alfa.dim_employees_gold
+[0m23:03:23.039158 [debug] [Thread-4  ]: Writing runtime sql for node "model.dbt_alfa.dim_employees_gold"
+[0m23:03:23.040670 [debug] [Thread-3  ]: Sending event: {'category': 'dbt', 'action': 'run_model', 'label': '7622978f-e89f-4b9f-bf56-8d272ad14653', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7287f51b7070>]}
+[0m23:03:23.041262 [info ] [Thread-3  ]: 3 of 11 OK created sql view model SILVER_SILVER.stg_payroll .................... [[32mSUCCESS 1[0m in 0.58s]
+[0m23:03:23.041823 [debug] [Thread-3  ]: Finished running node model.dbt_alfa.stg_payroll
+[0m23:03:23.042308 [debug] [Thread-4  ]: Using snowflake connection "model.dbt_alfa.dim_employees_gold"
+[0m23:03:23.042725 [debug] [Thread-3  ]: Began running node model.dbt_alfa.dim_products_gold
+[0m23:03:23.043228 [debug] [Thread-4  ]: On model.dbt_alfa.dim_employees_gold: /* {"app": "dbt", "dbt_version": "1.8.7", "profile_name": "dbt_alfa", "target_name": "dev", "node_id": "model.dbt_alfa.dim_employees_gold"} */
+create or replace transient table ALFA_PROJEKT.SILVER_GOLD.dim_employees_gold
+         as
+        (
+SELECT * FROM ALFA_PROJEKT.SILVER_SILVER.stg_employees
+        );
+[0m23:03:23.043807 [info ] [Thread-3  ]: 7 of 11 START sql table model SILVER_GOLD.dim_products_gold .................... [RUN]
+[0m23:03:23.044238 [debug] [Thread-4  ]: Opening a new connection, currently in state closed
+[0m23:03:23.044682 [debug] [Thread-3  ]: Re-using an available connection from the pool (formerly model.dbt_alfa.stg_payroll, now model.dbt_alfa.dim_products_gold)
+[0m23:03:23.045656 [debug] [Thread-3  ]: Began compiling node model.dbt_alfa.dim_products_gold
+[0m23:03:23.049031 [debug] [Thread-3  ]: Writing injected SQL for node "model.dbt_alfa.dim_products_gold"
+[0m23:03:23.050863 [debug] [Thread-3  ]: Began executing node model.dbt_alfa.dim_products_gold
+[0m23:03:23.053276 [debug] [Thread-3  ]: Writing runtime sql for node "model.dbt_alfa.dim_products_gold"
+[0m23:03:23.054293 [debug] [Thread-2  ]: Sending event: {'category': 'dbt', 'action': 'run_model', 'label': '7622978f-e89f-4b9f-bf56-8d272ad14653', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7287fb3cbfd0>]}
+[0m23:03:23.055017 [info ] [Thread-2  ]: 2 of 11 OK created sql view model SILVER_SILVER.stg_orders ..................... [[32mSUCCESS 1[0m in 0.60s]
+[0m23:03:23.055713 [debug] [Thread-2  ]: Finished running node model.dbt_alfa.stg_orders
+[0m23:03:23.056165 [debug] [Thread-2  ]: Began running node model.dbt_alfa.dim_payroll_gold
+[0m23:03:23.056847 [info ] [Thread-2  ]: 8 of 11 START sql table model SILVER_GOLD.dim_payroll_gold ..................... [RUN]
+[0m23:03:23.058084 [debug] [Thread-3  ]: Using snowflake connection "model.dbt_alfa.dim_products_gold"
+[0m23:03:23.058650 [debug] [Thread-2  ]: Re-using an available connection from the pool (formerly model.dbt_alfa.stg_orders, now model.dbt_alfa.dim_payroll_gold)
+[0m23:03:23.059346 [debug] [Thread-3  ]: On model.dbt_alfa.dim_products_gold: /* {"app": "dbt", "dbt_version": "1.8.7", "profile_name": "dbt_alfa", "target_name": "dev", "node_id": "model.dbt_alfa.dim_products_gold"} */
+create or replace transient table ALFA_PROJEKT.SILVER_GOLD.dim_products_gold
+         as
+        (
+SELECT * FROM ALFA_PROJEKT.SILVER_SILVER.stg_products
+        );
+[0m23:03:23.060018 [debug] [Thread-2  ]: Began compiling node model.dbt_alfa.dim_payroll_gold
+[0m23:03:23.060602 [debug] [Thread-3  ]: Opening a new connection, currently in state closed
+[0m23:03:23.064300 [debug] [Thread-2  ]: Writing injected SQL for node "model.dbt_alfa.dim_payroll_gold"
+[0m23:03:23.066557 [debug] [Thread-2  ]: Began executing node model.dbt_alfa.dim_payroll_gold
+[0m23:03:23.068740 [debug] [Thread-2  ]: Writing runtime sql for node "model.dbt_alfa.dim_payroll_gold"
+[0m23:03:23.069368 [debug] [Thread-2  ]: Using snowflake connection "model.dbt_alfa.dim_payroll_gold"
+[0m23:03:23.069673 [debug] [Thread-2  ]: On model.dbt_alfa.dim_payroll_gold: /* {"app": "dbt", "dbt_version": "1.8.7", "profile_name": "dbt_alfa", "target_name": "dev", "node_id": "model.dbt_alfa.dim_payroll_gold"} */
+create or replace transient table ALFA_PROJEKT.SILVER_GOLD.dim_payroll_gold
+         as
+        (
+SELECT * FROM ALFA_PROJEKT.SILVER_SILVER.stg_payroll
+        );
+[0m23:03:23.069972 [debug] [Thread-2  ]: Opening a new connection, currently in state closed
+[0m23:03:23.341197 [debug] [Thread-1  ]: SQL status: SUCCESS 1 in 0.338 seconds
+[0m23:03:23.343156 [debug] [Thread-1  ]: On model.dbt_alfa.stg_traffic: Close
+[0m23:03:23.412800 [debug] [Thread-1  ]: Sending event: {'category': 'dbt', 'action': 'run_model', 'label': '7622978f-e89f-4b9f-bf56-8d272ad14653', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7287f508f370>]}
+[0m23:03:23.413613 [info ] [Thread-1  ]: 5 of 11 OK created sql view model SILVER_SILVER.stg_traffic .................... [[32mSUCCESS 1[0m in 0.42s]
+[0m23:03:23.414155 [debug] [Thread-1  ]: Finished running node model.dbt_alfa.stg_traffic
+[0m23:03:23.414573 [debug] [Thread-1  ]: Began running node model.dbt_alfa.fact_orders_gold
+[0m23:03:23.415092 [info ] [Thread-1  ]: 9 of 11 START sql incremental model SILVER_GOLD.fact_orders_gold ............... [RUN]
+[0m23:03:23.415682 [debug] [Thread-1  ]: Re-using an available connection from the pool (formerly model.dbt_alfa.stg_traffic, now model.dbt_alfa.fact_orders_gold)
+[0m23:03:23.416001 [debug] [Thread-1  ]: Began compiling node model.dbt_alfa.fact_orders_gold
+[0m23:03:23.421502 [debug] [Thread-1  ]: Writing injected SQL for node "model.dbt_alfa.fact_orders_gold"
+[0m23:03:23.421980 [debug] [Thread-1  ]: Began executing node model.dbt_alfa.fact_orders_gold
+[0m23:03:23.445197 [debug] [Thread-1  ]: Writing runtime sql for node "model.dbt_alfa.fact_orders_gold"
+[0m23:03:23.446193 [debug] [Thread-1  ]: Using snowflake connection "model.dbt_alfa.fact_orders_gold"
+[0m23:03:23.446534 [debug] [Thread-1  ]: On model.dbt_alfa.fact_orders_gold: /* {"app": "dbt", "dbt_version": "1.8.7", "profile_name": "dbt_alfa", "target_name": "dev", "node_id": "model.dbt_alfa.fact_orders_gold"} */
+create or replace transient table ALFA_PROJEKT.SILVER_GOLD.fact_orders_gold
+         as
+        (
+
+SELECT 
+    o.order_id,
+    o.order_timestamp,
+    o.employee_id,
+    o.product_id,
+    o.quantity,
+    p.base_price as unit_price,
+    (o.quantity * p.base_price) as product_revenue,
+    o.service_price as addon_revenue,
+    -- Celková tržba za řádek (produkty + addon)
+    (o.quantity * p.base_price) + o.service_price as total_order_value,
+    o.service_type
+FROM ALFA_PROJEKT.SILVER_SILVER.stg_orders o
+LEFT JOIN ALFA_PROJEKT.SILVER_SILVER.stg_products p ON o.product_id = p.product_id
+
+
+        );
+[0m23:03:23.446851 [debug] [Thread-1  ]: Opening a new connection, currently in state closed
+[0m23:03:24.463316 [debug] [Thread-2  ]: SQL status: SUCCESS 1 in 1.393 seconds
+[0m23:03:24.465720 [debug] [Thread-2  ]: On model.dbt_alfa.dim_payroll_gold: Close
+[0m23:03:24.473995 [debug] [Thread-3  ]: SQL status: SUCCESS 1 in 1.413 seconds
+[0m23:03:24.475755 [debug] [Thread-3  ]: On model.dbt_alfa.dim_products_gold: Close
+[0m23:03:24.479176 [debug] [Thread-4  ]: SQL status: SUCCESS 1 in 1.435 seconds
+[0m23:03:24.480899 [debug] [Thread-4  ]: On model.dbt_alfa.dim_employees_gold: Close
+[0m23:03:24.533229 [debug] [Thread-2  ]: Sending event: {'category': 'dbt', 'action': 'run_model', 'label': '7622978f-e89f-4b9f-bf56-8d272ad14653', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7287fb3cbfd0>]}
+[0m23:03:24.533944 [info ] [Thread-2  ]: 8 of 11 OK created sql table model SILVER_GOLD.dim_payroll_gold ................ [[32mSUCCESS 1[0m in 1.47s]
+[0m23:03:24.534604 [debug] [Thread-2  ]: Finished running node model.dbt_alfa.dim_payroll_gold
+[0m23:03:24.534981 [debug] [Thread-2  ]: Began running node model.dbt_alfa.mart_monthly_product_sales
+[0m23:03:24.535504 [info ] [Thread-2  ]: 10 of 11 START sql incremental model SILVER_GOLD.mart_monthly_product_sales .... [RUN]
+[0m23:03:24.535920 [debug] [Thread-2  ]: Re-using an available connection from the pool (formerly model.dbt_alfa.dim_payroll_gold, now model.dbt_alfa.mart_monthly_product_sales)
+[0m23:03:24.536226 [debug] [Thread-2  ]: Began compiling node model.dbt_alfa.mart_monthly_product_sales
+[0m23:03:24.540710 [debug] [Thread-2  ]: Writing injected SQL for node "model.dbt_alfa.mart_monthly_product_sales"
+[0m23:03:24.541256 [debug] [Thread-2  ]: Began executing node model.dbt_alfa.mart_monthly_product_sales
+[0m23:03:24.543775 [debug] [Thread-2  ]: Writing runtime sql for node "model.dbt_alfa.mart_monthly_product_sales"
+[0m23:03:24.545375 [debug] [Thread-2  ]: Using snowflake connection "model.dbt_alfa.mart_monthly_product_sales"
+[0m23:03:24.545774 [debug] [Thread-2  ]: On model.dbt_alfa.mart_monthly_product_sales: /* {"app": "dbt", "dbt_version": "1.8.7", "profile_name": "dbt_alfa", "target_name": "dev", "node_id": "model.dbt_alfa.mart_monthly_product_sales"} */
+create or replace transient table ALFA_PROJEKT.SILVER_GOLD.mart_monthly_product_sales
+         as
+        (
+
+SELECT
+    MD5(CONCAT(DATE_TRUNC('month', o.order_timestamp), p.product_id)) as month_prod_id,
+    DATE_TRUNC('month', o.order_timestamp) as sales_month,
+    p.category,
+    p.subcategory,
+    p.product_name,
+    SUM(o.quantity) as total_qty,
+    -- Tržba jen za produkty
+    SUM(o.quantity * p.base_price) as product_revenue,
+    -- Tržba za doplňkové služby
+    SUM(o.service_price) as addon_revenue,
+    -- Celková tržba
+    SUM((o.quantity * p.base_price) + o.service_price) as total_revenue,
+    -- Marže (pouze z produktů)
+    SUM(o.quantity * (p.base_price - p.unit_cost)) as product_margin
+FROM ALFA_PROJEKT.SILVER_SILVER.stg_orders o
+JOIN ALFA_PROJEKT.SILVER_SILVER.stg_products p ON o.product_id = p.product_id
+
+
+
+GROUP BY 1, 2, 3, 4, 5
+        );
+[0m23:03:24.546110 [debug] [Thread-2  ]: Opening a new connection, currently in state closed
+[0m23:03:24.547274 [debug] [Thread-3  ]: Sending event: {'category': 'dbt', 'action': 'run_model', 'label': '7622978f-e89f-4b9f-bf56-8d272ad14653', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7287f55f63a0>]}
+[0m23:03:24.549286 [info ] [Thread-3  ]: 7 of 11 OK created sql table model SILVER_GOLD.dim_products_gold ............... [[32mSUCCESS 1[0m in 1.50s]
+[0m23:03:24.550085 [debug] [Thread-3  ]: Finished running node model.dbt_alfa.dim_products_gold
+[0m23:03:24.551006 [debug] [Thread-4  ]: Sending event: {'category': 'dbt', 'action': 'run_model', 'label': '7622978f-e89f-4b9f-bf56-8d272ad14653', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7287f5176910>]}
+[0m23:03:24.551491 [debug] [Thread-3  ]: Began running node model.dbt_alfa.mart_hourly_traffic_conversion
+[0m23:03:24.552190 [info ] [Thread-4  ]: 6 of 11 OK created sql table model SILVER_GOLD.dim_employees_gold .............. [[32mSUCCESS 1[0m in 1.53s]
+[0m23:03:24.552779 [info ] [Thread-3  ]: 11 of 11 START sql incremental model SILVER_GOLD.mart_hourly_traffic_conversion  [RUN]
+[0m23:03:24.553357 [debug] [Thread-4  ]: Finished running node model.dbt_alfa.dim_employees_gold
+[0m23:03:24.553746 [debug] [Thread-3  ]: Re-using an available connection from the pool (formerly model.dbt_alfa.dim_products_gold, now model.dbt_alfa.mart_hourly_traffic_conversion)
+[0m23:03:24.554284 [debug] [Thread-3  ]: Began compiling node model.dbt_alfa.mart_hourly_traffic_conversion
+[0m23:03:24.557380 [debug] [Thread-3  ]: Writing injected SQL for node "model.dbt_alfa.mart_hourly_traffic_conversion"
+[0m23:03:24.557893 [debug] [Thread-3  ]: Began executing node model.dbt_alfa.mart_hourly_traffic_conversion
+[0m23:03:24.560677 [debug] [Thread-3  ]: Using snowflake connection "model.dbt_alfa.mart_hourly_traffic_conversion"
+[0m23:03:24.561034 [debug] [Thread-3  ]: On model.dbt_alfa.mart_hourly_traffic_conversion: /* {"app": "dbt", "dbt_version": "1.8.7", "profile_name": "dbt_alfa", "target_name": "dev", "node_id": "model.dbt_alfa.mart_hourly_traffic_conversion"} */
+create or replace  temporary view ALFA_PROJEKT.SILVER_GOLD.mart_hourly_traffic_conversion__dbt_tmp
+  
+   as (
+    
+
+SELECT
+    DATE_TRUNC('hour', t.event_timestamp) as event_hour,
+    EXTRACT(HOUR FROM t.event_timestamp) as hour_of_day,
+    COUNT(DISTINCT t.traffic_id) as total_visits,
+    COUNT(CASE WHEN t.item_in_cart = 'yes' THEN 1 END) as total_carts,
+    COUNT(DISTINCT t.order_id) as total_orders
+FROM ALFA_PROJEKT.SILVER_SILVER.stg_traffic t
+
+
+  WHERE t.event_timestamp > (SELECT MAX(event_hour) FROM ALFA_PROJEKT.SILVER_GOLD.mart_hourly_traffic_conversion)
+
+
+GROUP BY 1, 2
+  );
+[0m23:03:24.561363 [debug] [Thread-3  ]: Opening a new connection, currently in state closed
+[0m23:03:24.756963 [debug] [Thread-1  ]: SQL status: SUCCESS 1 in 1.310 seconds
+[0m23:03:24.764373 [debug] [Thread-1  ]: Applying DROP to: ALFA_PROJEKT.SILVER_GOLD.fact_orders_gold__dbt_tmp
+[0m23:03:24.769258 [debug] [Thread-1  ]: Using snowflake connection "model.dbt_alfa.fact_orders_gold"
+[0m23:03:24.769873 [debug] [Thread-1  ]: On model.dbt_alfa.fact_orders_gold: /* {"app": "dbt", "dbt_version": "1.8.7", "profile_name": "dbt_alfa", "target_name": "dev", "node_id": "model.dbt_alfa.fact_orders_gold"} */
+drop view if exists ALFA_PROJEKT.SILVER_GOLD.fact_orders_gold__dbt_tmp cascade
+[0m23:03:24.823321 [debug] [Thread-1  ]: SQL status: SUCCESS 1 in 0.053 seconds
+[0m23:03:24.825512 [debug] [Thread-1  ]: On model.dbt_alfa.fact_orders_gold: Close
+[0m23:03:24.905656 [debug] [Thread-1  ]: Sending event: {'category': 'dbt', 'action': 'run_model', 'label': '7622978f-e89f-4b9f-bf56-8d272ad14653', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7287f508f370>]}
+[0m23:03:24.906428 [info ] [Thread-1  ]: 9 of 11 OK created sql incremental model SILVER_GOLD.fact_orders_gold .......... [[32mSUCCESS 1[0m in 1.49s]
+[0m23:03:24.907014 [debug] [Thread-1  ]: Finished running node model.dbt_alfa.fact_orders_gold
+[0m23:03:24.946916 [debug] [Thread-3  ]: SQL status: SUCCESS 1 in 0.385 seconds
+[0m23:03:24.954680 [debug] [Thread-3  ]: Using snowflake connection "model.dbt_alfa.mart_hourly_traffic_conversion"
+[0m23:03:24.955070 [debug] [Thread-3  ]: On model.dbt_alfa.mart_hourly_traffic_conversion: /* {"app": "dbt", "dbt_version": "1.8.7", "profile_name": "dbt_alfa", "target_name": "dev", "node_id": "model.dbt_alfa.mart_hourly_traffic_conversion"} */
+describe table ALFA_PROJEKT.SILVER_GOLD.mart_hourly_traffic_conversion__dbt_tmp
+[0m23:03:25.020802 [debug] [Thread-3  ]: SQL status: SUCCESS 5 in 0.065 seconds
+[0m23:03:25.025060 [debug] [Thread-3  ]: Using snowflake connection "model.dbt_alfa.mart_hourly_traffic_conversion"
+[0m23:03:25.025706 [debug] [Thread-3  ]: On model.dbt_alfa.mart_hourly_traffic_conversion: /* {"app": "dbt", "dbt_version": "1.8.7", "profile_name": "dbt_alfa", "target_name": "dev", "node_id": "model.dbt_alfa.mart_hourly_traffic_conversion"} */
+describe table ALFA_PROJEKT.SILVER_GOLD.mart_hourly_traffic_conversion
+[0m23:03:25.076407 [debug] [Thread-3  ]: SQL status: SUCCESS 5 in 0.050 seconds
+[0m23:03:25.083280 [debug] [Thread-3  ]: Using snowflake connection "model.dbt_alfa.mart_hourly_traffic_conversion"
+[0m23:03:25.083661 [debug] [Thread-3  ]: On model.dbt_alfa.mart_hourly_traffic_conversion: /* {"app": "dbt", "dbt_version": "1.8.7", "profile_name": "dbt_alfa", "target_name": "dev", "node_id": "model.dbt_alfa.mart_hourly_traffic_conversion"} */
+describe table "ALFA_PROJEKT"."SILVER_GOLD"."MART_HOURLY_TRAFFIC_CONVERSION"
+[0m23:03:25.130697 [debug] [Thread-3  ]: SQL status: SUCCESS 5 in 0.047 seconds
+[0m23:03:25.152397 [debug] [Thread-3  ]: Writing runtime sql for node "model.dbt_alfa.mart_hourly_traffic_conversion"
+[0m23:03:25.153413 [debug] [Thread-3  ]: Using snowflake connection "model.dbt_alfa.mart_hourly_traffic_conversion"
+[0m23:03:25.153750 [debug] [Thread-3  ]: On model.dbt_alfa.mart_hourly_traffic_conversion: /* {"app": "dbt", "dbt_version": "1.8.7", "profile_name": "dbt_alfa", "target_name": "dev", "node_id": "model.dbt_alfa.mart_hourly_traffic_conversion"} */
+-- back compat for old kwarg name
+  
+  begin;
+[0m23:03:25.216951 [debug] [Thread-3  ]: SQL status: SUCCESS 1 in 0.063 seconds
+[0m23:03:25.217433 [debug] [Thread-3  ]: Using snowflake connection "model.dbt_alfa.mart_hourly_traffic_conversion"
+[0m23:03:25.217849 [debug] [Thread-3  ]: On model.dbt_alfa.mart_hourly_traffic_conversion: /* {"app": "dbt", "dbt_version": "1.8.7", "profile_name": "dbt_alfa", "target_name": "dev", "node_id": "model.dbt_alfa.mart_hourly_traffic_conversion"} */
+merge into ALFA_PROJEKT.SILVER_GOLD.mart_hourly_traffic_conversion as DBT_INTERNAL_DEST
+        using ALFA_PROJEKT.SILVER_GOLD.mart_hourly_traffic_conversion__dbt_tmp as DBT_INTERNAL_SOURCE
+        on (
+                DBT_INTERNAL_SOURCE.event_hour = DBT_INTERNAL_DEST.event_hour
+            )
+
+    
+    when matched then update set
+        "EVENT_HOUR" = DBT_INTERNAL_SOURCE."EVENT_HOUR","HOUR_OF_DAY" = DBT_INTERNAL_SOURCE."HOUR_OF_DAY","TOTAL_VISITS" = DBT_INTERNAL_SOURCE."TOTAL_VISITS","TOTAL_CARTS" = DBT_INTERNAL_SOURCE."TOTAL_CARTS","TOTAL_ORDERS" = DBT_INTERNAL_SOURCE."TOTAL_ORDERS"
+    
+
+    when not matched then insert
+        ("EVENT_HOUR", "HOUR_OF_DAY", "TOTAL_VISITS", "TOTAL_CARTS", "TOTAL_ORDERS")
+    values
+        ("EVENT_HOUR", "HOUR_OF_DAY", "TOTAL_VISITS", "TOTAL_CARTS", "TOTAL_ORDERS")
+
+;
+[0m23:03:25.448278 [debug] [Thread-2  ]: SQL status: SUCCESS 1 in 0.902 seconds
+[0m23:03:25.450995 [debug] [Thread-2  ]: Applying DROP to: ALFA_PROJEKT.SILVER_GOLD.mart_monthly_product_sales__dbt_tmp
+[0m23:03:25.451832 [debug] [Thread-2  ]: Using snowflake connection "model.dbt_alfa.mart_monthly_product_sales"
+[0m23:03:25.452154 [debug] [Thread-2  ]: On model.dbt_alfa.mart_monthly_product_sales: /* {"app": "dbt", "dbt_version": "1.8.7", "profile_name": "dbt_alfa", "target_name": "dev", "node_id": "model.dbt_alfa.mart_monthly_product_sales"} */
+drop view if exists ALFA_PROJEKT.SILVER_GOLD.mart_monthly_product_sales__dbt_tmp cascade
+[0m23:03:25.518309 [debug] [Thread-2  ]: SQL status: SUCCESS 1 in 0.066 seconds
+[0m23:03:25.520770 [debug] [Thread-2  ]: On model.dbt_alfa.mart_monthly_product_sales: Close
+[0m23:03:25.592388 [debug] [Thread-2  ]: Sending event: {'category': 'dbt', 'action': 'run_model', 'label': '7622978f-e89f-4b9f-bf56-8d272ad14653', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7287f5099eb0>]}
+[0m23:03:25.593294 [info ] [Thread-2  ]: 10 of 11 OK created sql incremental model SILVER_GOLD.mart_monthly_product_sales  [[32mSUCCESS 1[0m in 1.06s]
+[0m23:03:25.593902 [debug] [Thread-2  ]: Finished running node model.dbt_alfa.mart_monthly_product_sales
+[0m23:03:26.242645 [debug] [Thread-3  ]: SQL status: SUCCESS 1 in 1.024 seconds
+[0m23:03:26.243159 [debug] [Thread-3  ]: Using snowflake connection "model.dbt_alfa.mart_hourly_traffic_conversion"
+[0m23:03:26.243567 [debug] [Thread-3  ]: On model.dbt_alfa.mart_hourly_traffic_conversion: /* {"app": "dbt", "dbt_version": "1.8.7", "profile_name": "dbt_alfa", "target_name": "dev", "node_id": "model.dbt_alfa.mart_hourly_traffic_conversion"} */
+COMMIT
+[0m23:03:26.425435 [debug] [Thread-3  ]: SQL status: SUCCESS 1 in 0.181 seconds
+[0m23:03:26.428939 [debug] [Thread-3  ]: Applying DROP to: ALFA_PROJEKT.SILVER_GOLD.mart_hourly_traffic_conversion__dbt_tmp
+[0m23:03:26.429898 [debug] [Thread-3  ]: Using snowflake connection "model.dbt_alfa.mart_hourly_traffic_conversion"
+[0m23:03:26.430216 [debug] [Thread-3  ]: On model.dbt_alfa.mart_hourly_traffic_conversion: /* {"app": "dbt", "dbt_version": "1.8.7", "profile_name": "dbt_alfa", "target_name": "dev", "node_id": "model.dbt_alfa.mart_hourly_traffic_conversion"} */
+drop view if exists ALFA_PROJEKT.SILVER_GOLD.mart_hourly_traffic_conversion__dbt_tmp cascade
+[0m23:03:26.533050 [debug] [Thread-3  ]: SQL status: SUCCESS 1 in 0.102 seconds
+[0m23:03:26.535011 [debug] [Thread-3  ]: On model.dbt_alfa.mart_hourly_traffic_conversion: Close
+[0m23:03:26.605132 [debug] [Thread-3  ]: Sending event: {'category': 'dbt', 'action': 'run_model', 'label': '7622978f-e89f-4b9f-bf56-8d272ad14653', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7287fb11ed60>]}
+[0m23:03:26.606020 [info ] [Thread-3  ]: 11 of 11 OK created sql incremental model SILVER_GOLD.mart_hourly_traffic_conversion  [[32mSUCCESS 1[0m in 2.05s]
+[0m23:03:26.606605 [debug] [Thread-3  ]: Finished running node model.dbt_alfa.mart_hourly_traffic_conversion
+[0m23:03:26.608164 [debug] [MainThread]: Connection 'master' was properly closed.
+[0m23:03:26.608437 [debug] [MainThread]: Connection 'model.dbt_alfa.fact_orders_gold' was properly closed.
+[0m23:03:26.608749 [debug] [MainThread]: Connection 'model.dbt_alfa.mart_monthly_product_sales' was properly closed.
+[0m23:03:26.609000 [debug] [MainThread]: Connection 'model.dbt_alfa.mart_hourly_traffic_conversion' was properly closed.
+[0m23:03:26.609239 [debug] [MainThread]: Connection 'model.dbt_alfa.dim_employees_gold' was properly closed.
+[0m23:03:26.609648 [info ] [MainThread]: 
+[0m23:03:26.610013 [info ] [MainThread]: Finished running 5 view models, 3 table models, 3 incremental models in 0 hours 0 minutes and 5.55 seconds (5.55s).
+[0m23:03:26.611316 [debug] [MainThread]: Command end result
+[0m23:03:26.635791 [info ] [MainThread]: 
+[0m23:03:26.636265 [info ] [MainThread]: [32mCompleted successfully[0m
+[0m23:03:26.636621 [info ] [MainThread]: 
+[0m23:03:26.637013 [info ] [MainThread]: Done. PASS=11 WARN=0 ERROR=0 SKIP=0 TOTAL=11
+[0m23:03:26.637857 [debug] [MainThread]: Resource report: {"command_name": "run", "command_success": true, "command_wall_clock_time": 6.5116673, "process_user_time": 2.611095, "process_kernel_time": 2.255218, "process_mem_max_rss": "209108", "process_in_blocks": "80", "process_out_blocks": "2216"}
+[0m23:03:26.638349 [debug] [MainThread]: Command `dbt run` succeeded at 23:03:26.638270 after 6.51 seconds
+[0m23:03:26.638684 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7287fb3ba370>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7287fa007be0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7287f9a18760>]}
+[0m23:03:26.638993 [debug] [MainThread]: Flushing usage events
+[0m23:03:29.366904 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7235ac4473a0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7235ab6d2610>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7235aa2a8040>]}
+
+
+============================== 23:03:29.371431 | ab03d1a7-02c7-4d36-a467-52bec5a3ce35 ==============================
+[0m23:03:29.371431 [info ] [MainThread]: Running with dbt=1.8.7
+[0m23:03:29.371870 [debug] [MainThread]: running dbt with arguments {'printer_width': '80', 'indirect_selection': 'eager', 'log_cache_events': 'False', 'write_json': 'True', 'partial_parse': 'True', 'cache_selected_only': 'False', 'warn_error': 'None', 'version_check': 'True', 'debug': 'False', 'log_path': '/opt/airflow/dbt_alfa/logs', 'fail_fast': 'False', 'profiles_dir': '/opt/airflow', 'use_colors': 'True', 'use_experimental_parser': 'False', 'empty': 'None', 'quiet': 'False', 'no_print': 'None', 'log_format': 'default', 'static_parser': 'True', 'invocation_command': 'dbt test', 'introspect': 'True', 'target_path': 'None', 'warn_error_options': 'WarnErrorOptions(include=[], exclude=[])', 'send_anonymous_usage_stats': 'True'}
+[0m23:03:29.963946 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'project_id', 'label': 'ab03d1a7-02c7-4d36-a467-52bec5a3ce35', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x72355123cdc0>]}
+[0m23:03:30.000161 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'adapter_info', 'label': 'ab03d1a7-02c7-4d36-a467-52bec5a3ce35', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7235aaae6760>]}
+[0m23:03:30.000913 [info ] [MainThread]: Registered adapter: snowflake=1.8.4
+[0m23:03:30.016491 [debug] [MainThread]: checksum: 4af21dafb485259c48497ac86b711ddb1982f3d0f1c0ca4e09356de488b753c0, vars: {}, profile: , target: , version: 1.8.7
+[0m23:03:30.101479 [debug] [MainThread]: Partial parsing enabled: 0 files deleted, 0 files added, 0 files changed.
+[0m23:03:30.101908 [debug] [MainThread]: Partial parsing enabled, no changes found, skipping parsing
+[0m23:03:30.131450 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'load_project', 'label': 'ab03d1a7-02c7-4d36-a467-52bec5a3ce35', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7235a678cf40>]}
+[0m23:03:30.262907 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'resource_counts', 'label': 'ab03d1a7-02c7-4d36-a467-52bec5a3ce35', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7235a66bcac0>]}
+[0m23:03:30.263384 [info ] [MainThread]: Found 11 models, 5 sources, 454 macros
+[0m23:03:30.263720 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'runnable_timing', 'label': 'ab03d1a7-02c7-4d36-a467-52bec5a3ce35', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7235ab7bf970>]}
+[0m23:03:30.264848 [info ] [MainThread]: 
+[0m23:03:30.265176 [warn ] [MainThread]: Nothing to do. Try checking your model configs and model specification args
+[0m23:03:30.266464 [debug] [MainThread]: Command end result
+[0m23:03:30.288491 [debug] [MainThread]: Resource report: {"command_name": "test", "command_success": true, "command_wall_clock_time": 0.9546387, "process_user_time": 1.874007, "process_kernel_time": 2.009285, "process_mem_max_rss": "190544", "process_in_blocks": "1120", "process_out_blocks": "1920"}
+[0m23:03:30.289043 [debug] [MainThread]: Command `dbt test` succeeded at 23:03:30.288965 after 0.96 seconds
+[0m23:03:30.289373 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7235ac4473a0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7235ac0f31f0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7235ac1a8130>]}
+[0m23:03:30.289706 [debug] [MainThread]: Flushing usage events

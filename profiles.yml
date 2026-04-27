@@ -5,7 +5,7 @@ dbt_alfa:
       type: snowflake
       account: lraixsh-yh49291
       user: ZAYKEIN
-      password: r7fGZ87nrkPmKby
+      password: "{{ env_var('SF_PASSWORD') }}"
       role: ACCOUNTADMIN
       database: ALFA_PROJEKT
       warehouse: ALFA_WH

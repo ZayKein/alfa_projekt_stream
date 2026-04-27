@@ -1,0 +1,2 @@
+
+SELECT * FROM ALFA_PROJEKT.SILVER_SILVER.stg_employees

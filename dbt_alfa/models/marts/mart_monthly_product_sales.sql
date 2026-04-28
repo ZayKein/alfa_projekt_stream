@@ -10,19 +10,18 @@ SELECT
     p.subcategory,
     p.product_name,
     SUM(o.quantity) as total_qty,
-    -- Tržba jen za produkty
     SUM(o.quantity * p.base_price) as product_revenue,
-    -- Tržba za doplňkové služby
     SUM(o.service_price) as addon_revenue,
-    -- Celková tržba
     SUM((o.quantity * p.base_price) + o.service_price) as total_revenue,
-    -- Marže (pouze z produktů)
     SUM(o.quantity * (p.base_price - p.unit_cost)) as product_margin
 FROM {{ ref('stg_orders') }} o
 JOIN {{ ref('stg_products') }} p ON o.product_id = p.product_id
 
 {% if is_incremental() %}
-  WHERE o.order_timestamp > (SELECT MAX(sales_month) FROM {{ this }})
+  -- Re-process the entire latest month so partial-month aggregates are always
+  -- recalculated correctly. Using >= so new rows within the current month are
+  -- included, and the unique_key merge replaces the stale agg row for that month.
+  WHERE DATE_TRUNC('month', o.order_timestamp) >= (SELECT MAX(sales_month) FROM {{ this }})
 {% endif %}
 
 GROUP BY 1, 2, 3, 4, 5

@@ -1,0 +1,55 @@
+version: '3.8'
+
+services:
+  # --- DATABÁZE (Metadata Airflow + tvoje Bronze/Silver data) ---
+  postgres:
+    image: postgres:15
+    container_name: alfa_stream_postgres
+    environment:
+      - POSTGRES_USER=airflow
+      - POSTGRES_PASSWORD=airflow
+      - POSTGRES_DB=airflow
+    ports:
+      - "5434:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U airflow" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # --- AIRFLOW (Orchestrace tvých vylepšených CSV skriptů) ---
+  airflow:
+    image: apache/airflow:2.7.1
+    container_name: alfa_stream_airflow
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      - LOAD_EX=False
+      - EXECUTOR=LocalExecutor
+      - SF_PASSWORD=
+      - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://airflow:airflow@postgres:5432/airflow
+      - AIRFLOW__CORE__LOAD_EXAMPLES=False
+      - AIRFLOW__CORE__TEST_CONNECTION=Enabled
+      - AIRFLOW__CORE__EXECUTOR=LocalExecutor
+      - AIRFLOW__CORE__PARALLELISM=8
+      - AIRFLOW__CORE__MAX_ACTIVE_RUNS_PER_DAG=2
+    ports:
+      - "8082:8080"
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - ./data:/opt/airflow/data
+      - ./keys:/opt/airflow/keys
+      - ./dbt_alfa:/opt/airflow/dbt_alfa
+      - ./profiles.yml:/opt/airflow/profiles.yml
+    command: >
+      bash -c "pip install dbt-snowflake pandas && airflow db init && airflow users create --username admin --firstname admin --lastname admin --role Admin --email admin@example.com --password admin && (airflow webserver & airflow scheduler)"
+
+volumes:
+  postgres_data:
+
+networks:
+  default:
+    name: alfa_projekt_net

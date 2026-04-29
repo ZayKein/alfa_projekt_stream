@@ -116,8 +116,3 @@ dbt test
 # DAG: 05_Master_Orchestrator → trigger manually
 ```
 
----
-
-## Architecture Diagram
-
-![Data Pipeline Schema](./Documentation%20ENG/Data%20Pipeline%20Schema.png)

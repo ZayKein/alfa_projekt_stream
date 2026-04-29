@@ -7,23 +7,25 @@
 
 ## Project: alfa_projekt_stream
 
-**Alfa Stream v4.5** — end-to-end data platform simulating real e-commerce operations. Author: David Urban.
+**Alfa Stream v5.0** — end-to-end data platform combining data engineering, data analytics, and ML. Author: David Urban.
 
-ELT pipelines land data in Snowflake across RAW → SILVER → GOLD layers, modeled with dbt. Reporting layer is **Power BI** (DirectQuery against Snowflake, composite model planned).
+ELT pipelines land data in Snowflake across RAW → SILVER → GOLD layers, modeled with dbt. Reporting layer is **Power BI** (DirectQuery + composite model). ML layer produces revenue forecasts, anomaly flags, and traffic predictions.
 
-### Current state (as of 2026-04-28)
+### Current state (as of 2026-04-29)
 
 - Data generators: **complete** — Python scripts simulate Products, Traffic, Orders with seasonality/peak-hour logic.
 - Orchestration: **complete** — Airflow Master Orchestrator DAG runs the full pipeline sequentially.
 - Postgres ODS: **complete** — local Docker container, used as intermediate staging before Snowflake.
 - Snowflake RAW layer: **complete** — raw tables loaded via DAG 03.
 - dbt SILVER (staging views): **complete** — all 5 staging models built.
-- dbt GOLD (marts/dims): **complete** — 3 dims, 1 fact, 2 mart aggregations built.
-- Power BI reports: **not yet built** — data layer is ready, `.pbix` not created yet.
+- dbt GOLD (marts/dims): **complete** — 3 dims, 1 fact, 5 mart aggregations built.
+- ML layer (DAG 06): **complete** — Prophet revenue forecast, Z-score anomaly detection, Ridge traffic prediction. All three run in parallel; outputs: GOLD.ML_REVENUE_FORECAST, GOLD.ML_ANOMALY_FLAGS, GOLD.ML_TRAFFIC_PREDICTION.
+- Power BI semantic model: **complete** — all relationships, DAX measures, and ML table definitions (including ML_ANOMALY_FLAGS and ML_TRAFFIC_PREDICTION) are in TMDL files.
+- Power BI report pages: **not yet built** — semantic model is ready, 5 dashboard pages still need to be built in Power BI Desktop.
 
 ### Active phase
 
-Building Power BI composite model on top of the gold layer. The two mart models (`mart_monthly_product_sales`, `mart_hourly_traffic_conversion`) serve as **pre-aggregated tables** to back DirectQuery visuals. Small dims will be imported; large facts and aggs stay in DirectQuery.
+Building the 5 Power BI report pages. All measures, relationships, and ML table refs are defined in TMDL. Work is purely visual — drag visuals, connect measures, format. Publish to MS Fabric trial after completion.
 
 ---
 

@@ -2,7 +2,23 @@ from airflow import DAG
 from airflow.operators.python import PythonOperator
 from airflow.providers.snowflake.hooks.snowflake import SnowflakeHook
 from datetime import datetime, timedelta
+import os
 import pandas as pd
+
+
+def _sf_engine():
+    """SQLAlchemy engine with insecure_mode=True to bypass OCSP for S3 batch downloads."""
+    from snowflake.sqlalchemy import URL
+    from sqlalchemy import create_engine
+    return create_engine(URL(
+        user='ZAYKEIN',
+        password=os.environ.get('SF_PASSWORD', ''),
+        account='lraixsh-yh49291',
+        warehouse='ALFA_WH',
+        database='ALFA_PROJEKT',
+        schema='GOLD',
+        insecure_mode=True,
+    ))
 
 
 # ── 1. REVENUE FORECAST (Facebook Prophet) ───────────────────────────────────
@@ -12,7 +28,7 @@ def run_revenue_forecast():
     import uuid
 
     sf_hook = SnowflakeHook(snowflake_conn_id='snowflake_conn')
-    sf_engine = sf_hook.get_sqlalchemy_engine()
+    sf_engine = _sf_engine()
 
     print("INFO: Pulling historical revenue data from Snowflake GOLD...", flush=True)
 
@@ -26,8 +42,8 @@ def run_revenue_forecast():
         ORDER BY 1, 2
     """
     df = pd.read_sql(query, sf_engine)
-    df['SALES_MONTH'] = pd.to_datetime(df['SALES_MONTH'])
     df.columns = [c.lower() for c in df.columns]
+    df['sales_month'] = pd.to_datetime(df['sales_month'])
 
     print(f"INFO: Loaded {len(df)} rows across {df['category'].nunique()} categories.", flush=True)
 
@@ -94,10 +110,9 @@ def run_revenue_forecast():
 
 def run_anomaly_detection():
     import uuid
-    import numpy as np
 
     sf_hook = SnowflakeHook(snowflake_conn_id='snowflake_conn')
-    sf_engine = sf_hook.get_sqlalchemy_engine()
+    sf_engine = _sf_engine()
 
     print("INFO: Pulling conversion and attach rate data for anomaly detection...", flush=True)
 
@@ -130,13 +145,13 @@ def run_anomaly_detection():
     employee_df['METRIC_NAME'] = 'ADDON_ATTACH_RATE_PCT'
 
     combined = pd.concat([product_df, employee_df], ignore_index=True)
-    combined['PERIOD'] = pd.to_datetime(combined['PERIOD'])
     combined.columns = [c.upper() for c in combined.columns]
+    combined['PERIOD'] = pd.to_datetime(combined['PERIOD'])
 
     generated_at = datetime.utcnow()
     results = []
 
-    for (entity_type, entity_id), group in combined.groupby(['ENTITY_TYPE', 'ENTITY_ID']):
+    for (_, __), group in combined.groupby(['ENTITY_TYPE', 'ENTITY_ID']):
         if len(group) < 3:
             continue
 
@@ -182,10 +197,9 @@ def run_traffic_prediction():
     from sklearn.linear_model import Ridge
     from sklearn.preprocessing import OneHotEncoder
     from sklearn.pipeline import Pipeline
-    import numpy as np
 
     sf_hook = SnowflakeHook(snowflake_conn_id='snowflake_conn')
-    sf_engine = sf_hook.get_sqlalchemy_engine()
+    sf_engine = _sf_engine()
 
     print("INFO: Pulling hourly traffic data for pattern prediction...", flush=True)
 
@@ -226,7 +240,6 @@ def run_traffic_prediction():
     grid['DAY_NAME'] = grid['DAY_OF_WEEK'].map(day_names)
     grid['GENERATED_AT'] = datetime.utcnow()
 
-    generated_at = datetime.utcnow()
     sf_hook.run("DROP TABLE IF EXISTS GOLD.ML_TRAFFIC_PREDICTION")
     grid.to_sql(
         'ML_TRAFFIC_PREDICTION', sf_engine, schema='GOLD',
@@ -269,5 +282,3 @@ with DAG(
         python_callable=run_traffic_prediction,
     )
 
-    # All three are independent — run in parallel
-    [forecast_revenue, detect_anomalies, predict_traffic]

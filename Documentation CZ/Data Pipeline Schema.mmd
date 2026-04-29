@@ -1,0 +1,59 @@
+graph TD
+    %% Airflow jako centrální mozek
+    subgraph Control_Plane [Orchestration Layer - Airflow]
+        MD[05_Master_Orchestrator]
+        
+        subgraph Pipelines [Individual Pipelines]
+            P0[00_HR_Gen]
+            P1[01_A_B_C_Sales_Gen]
+            P2[02_Postgres_Load]
+            P3[03_Cloud_Sync]
+            P4[04_dbt_Transform]
+        end
+    end
+
+    %% Datové vrstvy
+    subgraph Storage_Layer [Data Storage & Processing]
+        direction TB
+        subgraph Local [Local Environment - Docker]
+            PE[Python Data Engines]
+            PG[(PostgreSQL ODS)]
+        end
+
+        subgraph Cloud [Cloud Warehouse - Snowflake]
+            SFR[[Snowflake RAW]]
+            DBT{dbt Transformations}
+            SFG[[Snowflake GOLD]]
+        end
+    end
+
+    %% Řídící toky (Master dává povely pipeline)
+    MD ==>|Trigger & Wait| P0
+    MD ==>|Trigger & Wait| P1
+    MD ==>|Trigger & Wait| P2
+    MD ==>|Trigger & Wait| P3
+    MD ==>|Trigger & Wait| P4
+
+    %% Propojení Pipeline s technologií
+    P0 -.-> PE
+    P1 -.-> PE
+    P2 -.-> PG
+    P3 -.-> SFR
+    P4 -.-> DBT
+
+    %% Datové toky (Kudy tečou data)
+    PE ===>|CSV Bridge| PG
+    PG ===>|Incremental Vectorized Transfer| SFR
+    SFR ===> DBT
+    DBT ===>|Incremental Gold Marts| SFG
+
+    %% Výstup
+    SFG ---> PBI((Power BI Dashboards))
+
+    %% Stylování
+    style Control_Plane fill:#f9f9f9,stroke:#333,stroke-dasharray: 5 5
+    style MD fill:#f9f,color:#000,stroke-width:3px
+    style Pipelines fill:#fff,stroke:#00a1ff
+    style DBT fill:#ff694b,color:#fff,stroke-width:2px
+    style SFG fill:#ffd700,color:#000,stroke-width:2px
+    style PBI fill:#fb0,stroke:#333

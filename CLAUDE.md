@@ -167,30 +167,82 @@ All mart/fact models use **incremental materialization** (`unique_key` merge). L
 4. **Hourly Patterns** — peak hours heatmap using `mart_hourly_traffic_conversion`
 5. **Employee Addon Performance** — addon attach rate & revenue by tenure bracket using `mart_employee_addon_performance`; does experience drive better upselling?
 
-### Key DAX measures to build
+### Publishing target
 
-- `Total Revenue` = SUM(mart_monthly_product_sales[total_revenue])
-- `Total Margin` = SUM(mart_monthly_product_sales[product_margin])
-- `Margin %` = DIVIDE([Total Margin], [Total Revenue])
-- `Conversion Rate %` = DIVIDE(SUM(mart_traffic_conversion_by_product[total_orders]), SUM(mart_traffic_conversion_by_product[total_views]))
-- `Cart Rate %` = DIVIDE(SUM(mart_traffic_conversion_by_product[total_carts]), SUM(mart_traffic_conversion_by_product[total_views]))
-- `Addon Attach Rate %` = DIVIDE(SUM(mart_employee_addon_performance[addon_orders]), SUM(mart_employee_addon_performance[total_orders]))
-- MoM / YoY variants using `dim_date` relationships and DATEADD/SAMEPERIODLASTYEAR
+**MS Fabric 60-day trial** — report will be published to a Fabric workspace for a shareable portfolio link. Fabric gives a Premium-backed workspace: publish-to-web public link, Snowflake DirectQuery without an on-prem gateway, no Pro license needed for viewers.
+
+---
+
+### DAX measures — BUILT (written directly into TMDL files)
+
+All measures are live in the `.pbip` file at `C:\Users\durba\Desktop\Alfa_stream_Dashboard.pbip`.
+
+| Measure | Table | DAX |
+|---|---|---|
+| `Total Revenue` | MART_MONTHLY_PRODUCT_SALES | SUM([TOTAL_REVENUE]) |
+| `Total Product Revenue` | MART_MONTHLY_PRODUCT_SALES | SUM([PRODUCT_REVENUE]) |
+| `Total Addon Revenue` | MART_MONTHLY_PRODUCT_SALES | SUM([ADDON_REVENUE]) |
+| `Total Margin` | MART_MONTHLY_PRODUCT_SALES | SUM([PRODUCT_MARGIN]) |
+| `Margin %` | MART_MONTHLY_PRODUCT_SALES | DIVIDE([Total Margin], [Total Product Revenue], 0) |
+| `Total Qty Sold` | MART_MONTHLY_PRODUCT_SALES | SUM([TOTAL_QTY]) |
+| `Revenue MoM %` | MART_MONTHLY_PRODUCT_SALES | DATEADD(-1 month) vs current |
+| `Revenue YoY %` | MART_MONTHLY_PRODUCT_SALES | SAMEPERIODLASTYEAR |
+| `Total Orders` | FACT_ORDERS_GOLD | COUNTROWS(FACT_ORDERS_GOLD) |
+| `Total Views` | MART_TRAFFIC_CONVERSION_BY_PRODUCT | SUM([TOTAL_VIEWS]) |
+| `Total Carts` | MART_TRAFFIC_CONVERSION_BY_PRODUCT | SUM([TOTAL_CARTS]) |
+| `Conversion Rate %` | MART_TRAFFIC_CONVERSION_BY_PRODUCT | DIVIDE(SUM[TOTAL_ORDERS], SUM[TOTAL_VIEWS], 0) |
+| `Cart Rate %` | MART_TRAFFIC_CONVERSION_BY_PRODUCT | DIVIDE(SUM[TOTAL_CARTS], SUM[TOTAL_VIEWS], 0) |
+| `Total Visits` | MART_HOURLY_TRAFFIC_CONVERSION | SUM([TOTAL_VISITS]) |
+| `Addon Attach Rate %` | MART_EMPLOYEE_ADDON_PERFORMANCE | DIVIDE(SUM[ADDON_ORDERS], SUM[TOTAL_ORDERS], 0) |
+| `Total Addon Revenue` | MART_EMPLOYEE_ADDON_PERFORMANCE | SUM([TOTAL_ADDON_REVENUE]) |
+| `Avg Addon Value` | MART_EMPLOYEE_ADDON_PERFORMANCE | DIVIDE(SUM[TOTAL_ADDON_REVENUE], SUM[ADDON_ORDERS], 0) |
+
+### Relationships — BUILT (in relationships.tmdl)
+
+| From (many) | To (one) | Type |
+|---|---|---|
+| FACT_ORDERS_GOLD.ORDER_TIMESTAMP | DIM_DATE.DATE_DAY | datePartOnly |
+| MART_MONTHLY_PRODUCT_SALES.SALES_MONTH | DIM_DATE.DATE_DAY | datePartOnly |
+| MART_EMPLOYEE_ADDON_PERFORMANCE.PERFORMANCE_MONTH | DIM_DATE.DATE_DAY | datePartOnly |
+| MART_TRAFFIC_CONVERSION_BY_PRODUCT.TRAFFIC_MONTH | DIM_DATE.DATE_DAY | datePartOnly |
+| MART_HOURLY_TRAFFIC_CONVERSION.EVENT_HOUR | DIM_DATE.DATE_DAY | datePartOnly |
+| FACT_ORDERS_GOLD.PRODUCT_ID | DIM_PRODUCTS_GOLD.PRODUCT_ID | many-to-one |
+| MART_MONTHLY_PRODUCT_SALES.PRODUCT_ID | DIM_PRODUCTS_GOLD.PRODUCT_ID | many-to-one |
+| MART_TRAFFIC_CONVERSION_BY_PRODUCT.PRODUCT_ID | DIM_PRODUCTS_GOLD.PRODUCT_ID | many-to-one |
+| FACT_ORDERS_GOLD.EMPLOYEE_ID | DIM_EMPLOYEES_GOLD.EMPLOYEE_ID | many-to-one |
+| MART_EMPLOYEE_ADDON_PERFORMANCE.EMPLOYEE_ID | DIM_EMPLOYEES_GOLD.EMPLOYEE_ID | many-to-one |
+
+### Model configuration — DONE
+- `DIM_DATE` marked as date table (`dataCategory: Time`, `isKey` on DATE_DAY) — time intelligence enabled
+- All ID, rate, average, and unit-price columns set to `summarizeBy: none` — no accidental aggregation
+- `DIM_DATE`, `DIM_EMPLOYEES_GOLD`, `DIM_PAYROLL_GOLD`, `DIM_PRODUCTS_GOLD` → **Import**
+- All facts and marts → **DirectQuery**
 
 ### Notes
-- Mark `dim_date` as a **Date Table** in Power BI (table tools → mark as date table, date column = `date_day`) — required for time intelligence functions to work correctly.
-- All fact/mart tables relate to `dim_date` via their date/month column cast to date type.
-- `mart_employee_addon_performance` relates to `dim_employees_gold` on `employee_id` (use this instead of duplicating employee attributes in the mart).
-- Match data types exactly between agg and detail fact — type mismatches break agg matching silently.
+- All fact/mart tables relate to `dim_date` via their date/month column, `joinOnDateBehavior: datePartOnly`
+- `mart_employee_addon_performance` relates to `dim_employees_gold` on `employee_id`
+- DAX measures do NOT need to move to Snowflake — marts pre-aggregate the data, DAX only combines additive numbers. Only DISTINCTCOUNT-type measures would need pre-calculation, and none are used.
+- `.pbip` file path: `C:\Users\durba\Desktop\Alfa_stream_Dashboard.pbip` — edit TMDL files only when Desktop is fully closed.
+
+### Next session — visualisation (TODO)
+
+Build the 5 report pages in Power BI Desktop. All measures and relationships are ready — this is purely visual work:
+
+1. **Sales Overview** — KPI cards (Total Revenue, Total Margin, Margin %, Total Orders), line chart Revenue by month (`DIM_DATE[YEAR_MONTH]` × `[Total Revenue]`), Revenue MoM % and YoY % as secondary KPIs, slicer on Category
+2. **Product Performance** — bar chart revenue by category, table or matrix: product × revenue/margin/qty, conditional formatting on Margin %
+3. **Traffic & Conversion Funnel** — funnel or clustered bar: Views → Carts → Orders, line chart Conversion Rate % by month, scatter: product views vs conversion rate
+4. **Hourly Patterns** — matrix heatmap: HOUR_OF_DAY (rows) × DAY_NAME (columns) × Total Visits (values), line chart of visits by hour of day
+5. **Employee Addon Performance** — bar chart Addon Attach Rate % by TENURE_BRACKET, scatter: tenure months vs attach rate per employee, table of top performers
 
 **Open questions**
 - Refresh cadence — pipeline currently triggered manually via Master Orchestrator; consider scheduling for the portfolio demo.
+- Pro license / trial needed before publishing to Power BI Service for a shareable link.
 
 ---
 
 ## Known bugs / issues
 
-- **`mart_monthly_product_sales` incremental filter is wrong**: compares `o.order_timestamp` (TIMESTAMP) against `MAX(sales_month)` (DATE_TRUNC to month). On a partial month, re-runs will miss new rows from the current month because the max sales_month equals the start of that month and orders later in that month won't satisfy `order_timestamp > first_of_month`. Fix: use `DATE_TRUNC('month', order_timestamp) >= (SELECT MAX(sales_month) FROM {{ this }})` and delete+reinsert the latest month, or switch to a delete+insert incremental strategy.
+- ~~**`mart_monthly_product_sales` incremental filter bug**~~ — **FIXED 2026-04-28**. Was comparing `order_timestamp` (TIMESTAMP) to `MAX(sales_month)` (date-truncated). Fixed to `DATE_TRUNC('month', order_timestamp) >= MAX(sales_month)` so the latest partial month is always re-aggregated correctly.
 
 ---
 
@@ -244,5 +296,7 @@ Snowflake connection target: `dev` (in `dbt_alfa` profile).
 
 ## Changelog
 
+- *2026-04-29 (session 2)* — Discovered previous session's TMDL work was lost (file mishap). Re-added all 10 business relationships to relationships.tmdl, all 17 DAX measures to table TMDL files, and PRODUCT_ID column to MART_MONTHLY_PRODUCT_SALES.tmdl. Publishing target confirmed: MS Fabric 60-day trial. 5 report pages are the only remaining PBI task.
+- *2026-04-29* — Power BI semantic model fully configured via TMDL: 10 relationships, 17 DAX measures, date table marked, all summarizeBy fixed, Import/DirectQuery split set. Added PRODUCT_ID to mart_monthly_product_sales. Visualisation (5 report pages) is the only remaining task.
 - *2026-04-28* — all [TO FILL] sections populated from codebase read; known bugs section added; data model table added. Fixed incremental bug in mart_monthly_product_sales. Fixed schema naming (SILVER_GOLD → GOLD) via generate_schema_name macro. Added dim_date, mart_traffic_conversion_by_product, mart_employee_addon_performance. Full Power BI design plan documented.
 - *YYYY-MM-DD* — file scaffolded by Cowork session before VS Code handoff.

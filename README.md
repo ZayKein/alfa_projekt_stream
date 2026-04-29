@@ -17,7 +17,7 @@ The platform simulates a real e-commerce operation: products are listed, custome
 3. **Loads to Snowflake** — a vectorized DAG transfers data from Postgres into Snowflake's RAW schema.
 4. **Transforms with dbt** — dbt Core models clean, join, and aggregate the raw data into a SILVER (staging) and GOLD (business) layer using fully incremental (Delta Load) logic.
 5. **Reports in Power BI** — a composite model (Import + DirectQuery) connects to the GOLD layer, with pre-built DAX measures and five dashboard pages covering sales, products, traffic, hourly patterns, and employee performance.
-6. **Predicts future revenue** — a Facebook Prophet ML model runs as DAG 06 after every pipeline cycle, forecasting the next 6 months of revenue per product category. Predictions land in Snowflake as `ML_REVENUE_FORECAST` and are visualised directly in Power BI alongside actuals.
+6. **Applies ML models** — three independent models run as DAG 06 after every pipeline cycle: Facebook Prophet forecasts the next 6 months of revenue per product category (`ML_REVENUE_FORECAST`); Z-score analysis flags statistical anomalies in product conversion rates and employee attach rates (`ML_ANOMALY_FLAGS`); Ridge Regression predicts expected traffic for all 168 hour × day combinations (`ML_TRAFFIC_PREDICTION`). All outputs land in Snowflake GOLD and are visualised directly in Power BI.
 
 Everything runs automatically via a Master Orchestrator DAG in Apache Airflow.
 
@@ -33,7 +33,7 @@ Everything runs automatically via a Master Orchestrator DAG in Apache Airflow.
 | Cloud warehouse | Snowflake |
 | Transformation | dbt Core (incremental materialization) |
 | Reporting | Power BI (composite model, DirectQuery + Import) |
-| ML / Forecasting | Python — Facebook Prophet (revenue forecasting) |
+| ML / Predictions | Python — Prophet (revenue forecast), Z-score (anomaly detection), Ridge Regression (traffic patterns) |
 
 ---
 
@@ -43,7 +43,7 @@ Everything runs automatically via a Master Orchestrator DAG in Apache Airflow.
 - **Three-layer Snowflake architecture** — RAW (as-landed), SILVER (cleaned views), GOLD (business-ready tables and mart aggregations).
 - **Pre-aggregated marts** — five mart tables serve as the primary targets for Power BI visuals, reducing query load on DirectQuery and enabling aggregation awareness.
 - **Composite Power BI model** — small dimension tables are imported for speed; large fact and mart tables stay in DirectQuery for freshness.
-- **Integrated ML forecasting** — Prophet runs inside the Airflow pipeline after every dbt transformation cycle, so predictions are always based on the latest data without any manual intervention.
+- **Integrated ML layer** — three models (Prophet forecasting, Z-score anomaly detection, Ridge Regression traffic prediction) run inside the Airflow pipeline after every dbt cycle as parallel tasks, so all predictions are always based on the latest data without any manual intervention.
 
 ---
 
@@ -59,7 +59,8 @@ alfa_projekt_stream/
 │   ├── 02_Load_To_Postgres_Full.py     # Load all data to local Postgres
 │   ├── 03_Postgres_to_Snowflake.py     # Vectorized transfer Postgres → Snowflake RAW
 │   ├── 04_Snowflake_Transformation.py  # Triggers dbt run + dbt test
-│   └── 05_Master_Orchestrator.py       # Sequential trigger of all DAGs above
+│   ├── 05_Master_Orchestrator.py       # Sequential trigger of all DAGs above
+│   └── 06_ML_Predictions.py            # Prophet forecast, Z-score anomaly detection, Ridge traffic prediction
 ├── dbt_alfa/
 │   └── models/
 │       ├── staging/                    # SILVER schema — cleaned views
@@ -85,6 +86,9 @@ alfa_projekt_stream/
 | `mart_hourly_traffic_conversion` | truncated hour | Traffic & conversion by hour |
 | `mart_traffic_conversion_by_product` | month × product | Product-level funnel (views → carts → orders) |
 | `mart_employee_addon_performance` | month × employee | Addon attach rate & revenue by tenure |
+| `ML_REVENUE_FORECAST` | month × category | Prophet 6-month revenue forecast with confidence interval |
+| `ML_ANOMALY_FLAGS` | period × entity | Z-score anomaly flags for conversion rates and attach rates |
+| `ML_TRAFFIC_PREDICTION` | hour × day of week | Ridge Regression predicted visit count for all 168 combinations |
 
 ---
 

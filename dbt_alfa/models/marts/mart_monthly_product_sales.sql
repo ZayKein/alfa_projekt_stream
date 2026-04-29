@@ -6,6 +6,7 @@
 SELECT
     MD5(CONCAT(DATE_TRUNC('month', o.order_timestamp), p.product_id)) as month_prod_id,
     DATE_TRUNC('month', o.order_timestamp) as sales_month,
+    p.product_id,
     p.category,
     p.subcategory,
     p.product_name,
@@ -24,4 +25,4 @@ JOIN {{ ref('stg_products') }} p ON o.product_id = p.product_id
   WHERE DATE_TRUNC('month', o.order_timestamp) >= (SELECT MAX(sales_month) FROM {{ this }})
 {% endif %}
 
-GROUP BY 1, 2, 3, 4, 5
+GROUP BY 1, 2, 3, 4, 5, 6

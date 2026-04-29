@@ -17,7 +17,7 @@ Projekt pokrývá celý datový životní cyklus: simulace zdrojových dat, orch
 3. **Načítá do Snowflake** — vektorizovaný DAG přesouvá data z Postgresu do Snowflake RAW schématu.
 4. **Transformuje přes dbt** — dbt Core modely čistí, spojují a agregují surová data do SILVER (staging) a GOLD (byznys) vrstvy pomocí plně inkrementální (Delta Load) logiky.
 5. **Reportuje v Power BI** — kompozitní model (Import + DirectQuery) se napojuje na GOLD vrstvu s předpřipravenými DAX metrikami a pěti dashboard stránkami pokrývajícími prodeje, produkty, traffic, hodinové vzorce a výkon zaměstnanců.
-6. **Predikuje budoucí příjmy** — ML model Facebook Prophet běží jako DAG 06 po každém pipeline cyklu a předpovídá příjmy na následujících 6 měsíců podle kategorie produktu. Predikce se ukládají v Snowflake jako `ML_REVENUE_FORECAST` a jsou vizualizovány přímo v Power BI vedle skutečných hodnot.
+6. **Aplikuje ML modely** — tři nezávislé modely běží jako DAG 06 po každém pipeline cyklu: Facebook Prophet předpovídá příjmy na následujících 6 měsíců podle kategorie produktu (`ML_REVENUE_FORECAST`); Z-score analýza detekuje statistické anomálie v konverzních mírách produktů a attach rate zaměstnanců (`ML_ANOMALY_FLAGS`); Ridge Regression předpovídá očekávaný provoz pro všech 168 kombinací hodina × den (`ML_TRAFFIC_PREDICTION`). Všechny výsledky se ukládají v Snowflake GOLD a jsou vizualizovány přímo v Power BI.
 
 Vše běží automaticky přes Master Orchestrátor DAG v Apache Airflow.
 
@@ -33,7 +33,7 @@ Vše běží automaticky přes Master Orchestrátor DAG v Apache Airflow.
 | Cloud warehouse | Snowflake |
 | Transformace | dbt Core (inkrementální materializace) |
 | Reporting & Analytika | Power BI (kompozitní model, DirectQuery + Import) |
-| ML / Predikce | Python — Facebook Prophet (predikce příjmů) |
+| ML / Predikce | Python — Prophet (predikce příjmů), Z-score (detekce anomálií), Ridge Regression (vzorce trafficu) |
 
 ---
 
@@ -43,7 +43,7 @@ Vše běží automaticky přes Master Orchestrátor DAG v Apache Airflow.
 - **Třívrstvá Snowflake architektura** — RAW (jako přistálo), SILVER (vyčištěné views), GOLD (byznys tabulky a mart agregace).
 - **Předagregované marty** — pět mart tabulek slouží jako primární zdroje pro Power BI vizuály, snižuje zátěž DirectQuery a umožňuje aggregation awareness.
 - **Kompozitní Power BI model** — malé dimenzionální tabulky se importují pro rychlost; velká fakta a marty zůstávají v DirectQuery pro aktuálnost dat.
-- **Integrované ML predikce** — Prophet běží uvnitř Airflow pipeline po každém dbt transformačním cyklu, takže predikce jsou vždy postaveny na nejnovějších datech bez jakéhokoli manuálního zásahu.
+- **Integrovaná ML vrstva** — tři modely (Prophet predikce příjmů, Z-score detekce anomálií, Ridge Regression vzorce trafficu) běží uvnitř Airflow pipeline po každém dbt cyklu jako paralelní tasky, takže všechny predikce jsou vždy postaveny na nejnovějších datech bez jakéhokoli manuálního zásahu.
 
 ---
 
@@ -59,7 +59,8 @@ alfa_projekt_stream/
 │   ├── 02_Load_To_Postgres_Full.py     # Načtení dat do lokálního Postgresu
 │   ├── 03_Postgres_to_Snowflake.py     # Vektorizovaný přesun Postgres → Snowflake RAW
 │   ├── 04_Snowflake_Transformation.py  # Spouští dbt run + dbt test
-│   └── 05_Master_Orchestrator.py       # Sekvenční spuštění všech DAGů výše
+│   ├── 05_Master_Orchestrator.py       # Sekvenční spuštění všech DAGů výše
+│   └── 06_ML_Predictions.py            # Prophet predikce, Z-score detekce anomálií, Ridge predikce trafficu
 ├── dbt_alfa/
 │   └── models/
 │       ├── staging/                    # SILVER schéma — vyčištěné views
@@ -86,6 +87,9 @@ alfa_projekt_stream/
 | `mart_hourly_traffic_conversion` | zkrácená hodina | Traffic a konverze po hodinách |
 | `mart_traffic_conversion_by_product` | měsíc × produkt | Produktový funnel (zobrazení → košík → objednávka) |
 | `mart_employee_addon_performance` | měsíc × zaměstnanec | Attach rate a příjem z addonů podle délky praxe |
+| `ML_REVENUE_FORECAST` | měsíc × kategorie | Prophet predikce příjmů na 6 měsíců s intervalem spolehlivosti |
+| `ML_ANOMALY_FLAGS` | období × entita | Z-score anomálie v konverzních mírách a attach rate |
+| `ML_TRAFFIC_PREDICTION` | hodina × den v týdnu | Ridge Regression předpovězený provoz pro všech 168 kombinací |
 
 ---
 

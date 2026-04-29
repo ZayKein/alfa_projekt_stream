@@ -45,7 +45,7 @@ services:
       - ./dbt_alfa:/opt/airflow/dbt_alfa
       - ./profiles.yml:/opt/airflow/profiles.yml
     command: >
-      bash -c "pip install dbt-snowflake pandas && airflow db init && airflow users create --username admin --firstname admin --lastname admin --role Admin --email admin@example.com --password admin && (airflow webserver & airflow scheduler)"
+      bash -c "pip install dbt-snowflake pandas prophet && airflow db init && airflow users create --username admin --firstname admin --lastname admin --role Admin --email admin@example.com --password admin && (airflow webserver & airflow scheduler)"
 
 volumes:
   postgres_data:

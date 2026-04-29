@@ -2,7 +2,7 @@
 
 > 🇬🇧 [English version](./README.md)
 
-**Alfa Stream** je osobní portfolio projekt, který jsem navrhl a postavil celý od základů jako ukázku komplexního end-to-end datového projektu — kombinující **datové inženýrství** a **datovou analytiku** v jedné platformě.
+**Alfa Stream** je osobní portfolio projekt, který jsem navrhl a postavil celý od základů jako ukázku komplexního end-to-end datového projektu — kombinující **datové inženýrství**, **datovou analytiku** a **strojové učení** v jedné platformě.
 
 Projekt pokrývá celý datový životní cyklus: simulace zdrojových dat, orchestrace pipeline, cloud warehouse, transformační modelování a analytická vrstva s byznysovými dashboardy. Platforma simuluje reálný e-commerce provoz — zákazníci procházejí katalogem, přidávají produkty do košíku, vytvářejí objednávky, zaměstnanci přidávají doplňkové služby. Vše automaticky protéká vícevrstvou pipeline do Snowflake, kde Power BI dashboardy zobrazují byznysové výstupy.
 
@@ -17,6 +17,7 @@ Projekt pokrývá celý datový životní cyklus: simulace zdrojových dat, orch
 3. **Načítá do Snowflake** — vektorizovaný DAG přesouvá data z Postgresu do Snowflake RAW schématu.
 4. **Transformuje přes dbt** — dbt Core modely čistí, spojují a agregují surová data do SILVER (staging) a GOLD (byznys) vrstvy pomocí plně inkrementální (Delta Load) logiky.
 5. **Reportuje v Power BI** — kompozitní model (Import + DirectQuery) se napojuje na GOLD vrstvu s předpřipravenými DAX metrikami a pěti dashboard stránkami pokrývajícími prodeje, produkty, traffic, hodinové vzorce a výkon zaměstnanců.
+6. **Predikuje budoucí příjmy** — ML model Facebook Prophet běží jako DAG 06 po každém pipeline cyklu a předpovídá příjmy na následujících 6 měsíců podle kategorie produktu. Predikce se ukládají v Snowflake jako `ML_REVENUE_FORECAST` a jsou vizualizovány přímo v Power BI vedle skutečných hodnot.
 
 Vše běží automaticky přes Master Orchestrátor DAG v Apache Airflow.
 
@@ -32,6 +33,7 @@ Vše běží automaticky přes Master Orchestrátor DAG v Apache Airflow.
 | Cloud warehouse | Snowflake |
 | Transformace | dbt Core (inkrementální materializace) |
 | Reporting & Analytika | Power BI (kompozitní model, DirectQuery + Import) |
+| ML / Predikce | Python — Facebook Prophet (predikce příjmů) |
 
 ---
 
@@ -41,6 +43,7 @@ Vše běží automaticky přes Master Orchestrátor DAG v Apache Airflow.
 - **Třívrstvá Snowflake architektura** — RAW (jako přistálo), SILVER (vyčištěné views), GOLD (byznys tabulky a mart agregace).
 - **Předagregované marty** — pět mart tabulek slouží jako primární zdroje pro Power BI vizuály, snižuje zátěž DirectQuery a umožňuje aggregation awareness.
 - **Kompozitní Power BI model** — malé dimenzionální tabulky se importují pro rychlost; velká fakta a marty zůstávají v DirectQuery pro aktuálnost dat.
+- **Integrované ML predikce** — Prophet běží uvnitř Airflow pipeline po každém dbt transformačním cyklu, takže predikce jsou vždy postaveny na nejnovějších datech bez jakéhokoli manuálního zásahu.
 
 ---
 

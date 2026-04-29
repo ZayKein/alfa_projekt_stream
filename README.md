@@ -2,7 +2,7 @@
 
 > 🇨🇿 [Česká verze](./README_CZ.md)
 
-**Alfa Stream** is a personal portfolio project built to showcase my skills across the full data spectrum — combining **data engineering** and **data analytics** in one end-to-end platform. I designed and built the entire stack from scratch — data simulation, pipeline orchestration, cloud warehousing, transformation modeling, and a business intelligence layer on top.
+**Alfa Stream** is a personal portfolio project built to showcase my skills across the full data spectrum — combining **data engineering**, **data analytics**, and **machine learning** in one end-to-end platform. I designed and built the entire stack from scratch — data simulation, pipeline orchestration, cloud warehousing, transformation modeling, a business intelligence layer, and predictive ML models on top.
 
 The platform simulates a real e-commerce operation: products are listed, customers browse and place orders, employees handle add-on services. All of this data flows automatically through a multi-layer pipeline into a reporting-ready Snowflake data warehouse, where Power BI dashboards surface the business insights.
 
@@ -17,6 +17,7 @@ The platform simulates a real e-commerce operation: products are listed, custome
 3. **Loads to Snowflake** — a vectorized DAG transfers data from Postgres into Snowflake's RAW schema.
 4. **Transforms with dbt** — dbt Core models clean, join, and aggregate the raw data into a SILVER (staging) and GOLD (business) layer using fully incremental (Delta Load) logic.
 5. **Reports in Power BI** — a composite model (Import + DirectQuery) connects to the GOLD layer, with pre-built DAX measures and five dashboard pages covering sales, products, traffic, hourly patterns, and employee performance.
+6. **Predicts future revenue** — a Facebook Prophet ML model runs as DAG 06 after every pipeline cycle, forecasting the next 6 months of revenue per product category. Predictions land in Snowflake as `ML_REVENUE_FORECAST` and are visualised directly in Power BI alongside actuals.
 
 Everything runs automatically via a Master Orchestrator DAG in Apache Airflow.
 
@@ -32,6 +33,7 @@ Everything runs automatically via a Master Orchestrator DAG in Apache Airflow.
 | Cloud warehouse | Snowflake |
 | Transformation | dbt Core (incremental materialization) |
 | Reporting | Power BI (composite model, DirectQuery + Import) |
+| ML / Forecasting | Python — Facebook Prophet (revenue forecasting) |
 
 ---
 
@@ -41,6 +43,7 @@ Everything runs automatically via a Master Orchestrator DAG in Apache Airflow.
 - **Three-layer Snowflake architecture** — RAW (as-landed), SILVER (cleaned views), GOLD (business-ready tables and mart aggregations).
 - **Pre-aggregated marts** — five mart tables serve as the primary targets for Power BI visuals, reducing query load on DirectQuery and enabling aggregation awareness.
 - **Composite Power BI model** — small dimension tables are imported for speed; large fact and mart tables stay in DirectQuery for freshness.
+- **Integrated ML forecasting** — Prophet runs inside the Airflow pipeline after every dbt transformation cycle, so predictions are always based on the latest data without any manual intervention.
 
 ---
 

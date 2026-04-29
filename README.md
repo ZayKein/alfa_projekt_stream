@@ -1,126 +1,118 @@
-# 🚀 Alfa Stream v4.5: Hybrid Cloud Data Platform
+# Alfa Stream v5.0 — End-to-End Data Platform
 
-**CZ:** Alfa Stream v4.5 je komplexní end-to-end datová platforma simulující reálný e-commerce provoz. Projekt demonstruje orchestraci hybridního cloudu, pokročilé dbt modelování a plně inkrementální datové toky (Delta Load).
+**Alfa Stream** is a personal portfolio project built to showcase my data engineering skills. I designed and built the entire stack from scratch — data simulation, pipeline orchestration, cloud warehousing, transformation modeling, and a business intelligence layer on top.
 
-**EN:** Alfa Stream v4.5 is a comprehensive end-to-end data platform simulating real-world e-commerce operations. The project demonstrates hybrid-cloud orchestration, advanced dbt modeling, and full incremental data flows (Delta Load).
+The platform simulates a real e-commerce operation: products are listed, customers browse and place orders, employees handle add-on services. All of this data flows automatically through a multi-layer pipeline into a reporting-ready Snowflake data warehouse, where Power BI dashboards surface the business insights.
+
+**Author:** David Urban
 
 ---
 
-## 🏗️ Architecture / Architektura
+## What the platform does
 
-```mermaid
-graph TD
-    %% Airflow jako centrální mozek
-    subgraph Control_Plane ["Orchestration Layer - Airflow"]
-        MD["05_Master_Orchestrator"]        
-               
-        subgraph Pipelines ["Individual Pipelines"]
-            P0["00_HR_Gen"]
-            P1["01_Sales_Gen"]
-            P2["02_Postgres_Load"]
-            P3["03_Cloud_Sync"]
-            P4["04_dbt_Transform"]
-        end
-    end
+1. **Generates realistic data** — Python scripts simulate product catalog, employee roster, web traffic events, and orders with seasonality and peak-hour patterns.
+2. **Stores it locally** — all generated data lands in a PostgreSQL container (the ODS layer) before being pushed to the cloud.
+3. **Loads to Snowflake** — a vectorized DAG transfers data from Postgres into Snowflake's RAW schema.
+4. **Transforms with dbt** — dbt Core models clean, join, and aggregate the raw data into a SILVER (staging) and GOLD (business) layer using fully incremental (Delta Load) logic.
+5. **Reports in Power BI** — a composite model (Import + DirectQuery) connects to the GOLD layer, with pre-built DAX measures and five dashboard pages covering sales, products, traffic, hourly patterns, and employee performance.
 
-    %% Datové vrstvy
-    subgraph Storage_Layer ["Data Storage & Processing"]
-        direction TB
-        subgraph Local ["Local Environment - Docker"]
-            PE["Python Data Engines"]
-            PG[("Postgres ODS")]
-        end
+Everything runs automatically via a Master Orchestrator DAG in Apache Airflow.
 
-        subgraph Cloud ["Cloud Warehouse - Snowflake"]
-            SFR[[Snowflake RAW]]
-            DBT{"dbt Transformations"}
-            SFG[[Snowflake GOLD]]
-        end
-    end
+---
 
-    %% Řídící toky
-    MD ==> P0
-    MD ==> P1
-    MD ==> P2
-    MD ==> P3
-    MD ==> P4
+## Tech Stack
 
-    P0 & P1 -.-> PE
-    P2 -.-> PG
-    P3 -.-> SFR
-    P4 -.-> DBT
+| Layer | Technology |
+|---|---|
+| Orchestration | Apache Airflow 2.7.1 (Docker, LocalExecutor) |
+| Data generation | Python (Pandas) |
+| Local staging | PostgreSQL 15 (Docker) |
+| Cloud warehouse | Snowflake |
+| Transformation | dbt Core (incremental materialization) |
+| Reporting | Power BI (composite model, DirectQuery + Import) |
 
-    %% Datové toky
-    PE ===> PG
-    PG ===> SFR
-    SFR ===> DBT
-    DBT ===> SFG
+---
 
-    %% Výstup
-    SFG ---> PBI(("Power BI Dashboards"))
+## Key Design Choices
 
-    %% Stylování
-    style Control_Plane fill:#f9f9f9,stroke:#333,stroke-dasharray: 5 5
-    style MD fill:#f9f,color:#000,stroke-width:3px
-    style Pipelines fill:#fff,stroke:#00a1ff
-    style DBT fill:#ff694b,color:#fff,stroke-width:2px
-    style SFG fill:#ffd700,color:#000,stroke-width:2px
-    style PBI fill:#fb0,stroke:#333
+- **Delta Load everywhere** — from generators through to dbt models, only new rows are processed on each run. This keeps Snowflake compute costs minimal.
+- **Three-layer Snowflake architecture** — RAW (as-landed), SILVER (cleaned views), GOLD (business-ready tables and mart aggregations).
+- **Pre-aggregated marts** — five mart tables serve as the primary targets for Power BI visuals, reducing query load on DirectQuery and enabling aggregation awareness.
+- **Composite Power BI model** — small dimension tables are imported for speed; large fact and mart tables stay in DirectQuery for freshness.
+
+---
+
+## Repo Structure
+
+```
+alfa_projekt_stream/
+├── dags/
+│   ├── 00_hr_generator.py              # HR master data generator
+│   ├── 01_A_Alfa_Products.py           # Product master data
+│   ├── 01_B_Alfa_Traffic.py            # Incremental traffic event generator
+│   ├── 01_C_Alfa_Orders.py             # Incremental order generator
+│   ├── 02_Load_To_Postgres_Full.py     # Load all data to local Postgres
+│   ├── 03_Postgres_to_Snowflake.py     # Vectorized transfer Postgres → Snowflake RAW
+│   ├── 04_Snowflake_Transformation.py  # Triggers dbt run + dbt test
+│   └── 05_Master_Orchestrator.py       # Sequential trigger of all DAGs above
+├── dbt_alfa/
+│   └── models/
+│       ├── staging/                    # SILVER schema — cleaned views
+│       └── marts/                      # GOLD schema — incremental tables
+├── Documentation ENG/                  # Architecture diagrams and project docs
+├── docker-compose.yaml
+├── profiles.yml
+└── README.md
 ```
 
 ---
 
-## ⚙️ Pipelines Overview / Přehled procesů
+## Gold Layer — Data Models
 
-**CZ:** Systém je řízen Master Orchestrátorem (DAG 05), který sekvenčně spouští:
-- **00 & 01A:** Správa Master dat (Zaměstnanci, Produkty).
-- **01B & 01C:** Inkrementální generování Trafficu a Objednávek (Sezónnost, Peak Hours).
-- **02 & 03:** Load do lokálního Postgresu a následný vektorizovaný přesun do Snowflake RAW.
-- **04:** Inkrementální dbt transformace do vrstev SILVER (Staging) a GOLD (Business Marts).
-
-**EN:** The system is governed by a Master Orchestrator (DAG 05), executing sequentially:
-- **00 & 01A:** Master Data Management (Employees, Products).
-- **01B & 01C:** Incremental generation of Traffic and Orders (Seasonality, Peak Hours).
-- **02 & 03:** Load to local PostgreSQL and vectorized transfer to Snowflake RAW.
-- **04:** Incremental dbt transformations into SILVER (Staging) and GOLD (Business Marts).
-
----
-
-## 🌟 Key Features / Klíčové funkce
-
-**CZ:**
-- **Incremental Logic (Delta Load):** Všechny vrstvy od simulace po dbt zpracovávají pouze nové přírůstky, což minimalizuje náklady na Snowflake compute.
-- **Advanced dbt Modeling:** Transformace surových dat do granulárních byznys pohledů (Hourly Traffic, Monthly Sales Performance).
-- **Enterprise Orchestration:** Robustní Master DAG s logikou `wait_for_completion` a automatickým testováním kvality dat (`dbt test`).
-- **Snowflake Stability:** Vyřešení kritických metadatových konfliktů při cloudovém nahrávání (Manual Drop & Append strategy).
-
-**EN:**
-- **Incremental Logic (Delta Load):** All layers, from simulation to dbt, process only new increments, minimizing Snowflake compute costs.
-- **Advanced dbt Modeling:** Transformation of raw data into granular business views (Hourly Traffic, Monthly Sales Performance).
-- **Enterprise Orchestration:** Robust Master DAG with `wait_for_completion` logic and automated data quality checks (`dbt test`).
-- **Snowflake Stability:** Resolved critical metadata conflicts during cloud ingestion (Manual Drop & Append strategy).
+| Model | Grain | Purpose |
+|---|---|---|
+| `dim_date` | one row per calendar day | Date spine for time intelligence |
+| `dim_products_gold` | one row per product | Product dimension |
+| `dim_employees_gold` | one row per employee | Employee dimension |
+| `dim_payroll_gold` | one row per employee × month | Payroll dimension |
+| `fact_orders_gold` | one row per order | Order-level detail fact |
+| `mart_monthly_product_sales` | month × product | Revenue & margin aggregation |
+| `mart_hourly_traffic_conversion` | truncated hour | Traffic & conversion by hour |
+| `mart_traffic_conversion_by_product` | month × product | Product-level funnel (views → carts → orders) |
+| `mart_employee_addon_performance` | month × employee | Addon attach rate & revenue by tenure |
 
 ---
 
-## 🛠️ Tech Stack / Technologie
+## Power BI Dashboard Pages
 
-- **Orchestration:** Apache Airflow (LocalExecutor ready)
-- **Data Engineering:** Python (Pandas), SQL
-- **Database:** PostgreSQL (Docker), Snowflake (Cloud)
-- **Transformation:** dbt Core (Incremental Materialization)
-- **Visualization:** Power BI
-
----
-
-## 📖 Documentation / Dokumentace
-
-**CZ:** Kompletní technický popis, schéma databáze a řešení problémů naleznete ve složce:
-
-**EN:** Full technical description, database schema, and troubleshooting can be found in the folder:
-
-👉 [**Project Documentation Folder (CZ/ENG)**](./documentation/)
+1. **Sales Overview** — headline KPIs, monthly revenue trend, MoM and YoY comparison
+2. **Product Performance** — revenue and margin by category and product
+3. **Traffic & Conversion Funnel** — views → carts → orders by product and over time
+4. **Hourly Patterns** — heatmap of traffic and conversion by hour of day
+5. **Employee Addon Performance** — addon attach rate and revenue by tenure bracket
 
 ---
 
-**Author:** David Urban  
-**Status:** Production v4.5 (Orchestrated & Incremental)
+## Running the Project Locally
+
+```bash
+# Start infrastructure
+docker-compose up -d
+
+# Run dbt transformations (from dbt_alfa/)
+export SF_PASSWORD=<from docker-compose.yaml>
+cd dbt_alfa
+dbt run --select staging        # build SILVER views
+dbt run --select marts          # build GOLD tables
+dbt test
+
+# Trigger the full pipeline
+# Airflow UI → http://localhost:8082  (admin / admin)
+# DAG: 05_Master_Orchestrator → trigger manually
+```
+
+---
+
+## Architecture Diagram
+
+![Data Pipeline Schema](./Documentation%20ENG/Data%20Pipeline%20Schema.png)

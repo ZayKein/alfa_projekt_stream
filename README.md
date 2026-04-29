@@ -1,6 +1,8 @@
 # Alfa Stream v5.0 — End-to-End Data Platform
 
-**Alfa Stream** is a personal portfolio project built to showcase my data engineering skills. I designed and built the entire stack from scratch — data simulation, pipeline orchestration, cloud warehousing, transformation modeling, and a business intelligence layer on top.
+> 🇨🇿 [Česká verze](./README_CZ.md)
+
+**Alfa Stream** is a personal portfolio project built to showcase my skills across the full data spectrum — combining **data engineering** and **data analytics** in one end-to-end platform. I designed and built the entire stack from scratch — data simulation, pipeline orchestration, cloud warehousing, transformation modeling, and a business intelligence layer on top.
 
 The platform simulates a real e-commerce operation: products are listed, customers browse and place orders, employees handle add-on services. All of this data flows automatically through a multi-layer pipeline into a reporting-ready Snowflake data warehouse, where Power BI dashboards surface the business insights.
 

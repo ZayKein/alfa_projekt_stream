@@ -5,7 +5,7 @@
 
 SELECT
     MD5(CONCAT(DATE_TRUNC('month', o.order_timestamp), p.product_id)) as month_prod_id,
-    DATE_TRUNC('month', o.order_timestamp) as sales_month,
+    DATE_TRUNC('month', o.order_timestamp)::DATE as sales_month,
     p.product_id,
     p.category,
     p.subcategory,

@@ -108,9 +108,9 @@ Columns: `PRODUCT_ID`, `PRODUCT_NAME`, `CATEGORY`, `SUBCATEGORY`, `BRAND`, `BASE
 ### GOLD schema — marts/facts
 | Model | Grain | Key columns |
 |---|---|---|
-| `fact_orders_gold` | one row per order | `order_id`, `product_id`, `employee_id`, `order_timestamp`, `product_revenue`, `addon_revenue`, `total_order_value` |
-| `mart_monthly_product_sales` | month × product | `month_prod_id`, `sales_month`, `product_id`, `category`, `subcategory`, `product_name`, `total_qty`, `product_revenue`, `addon_revenue`, `total_revenue`, `product_margin` |
-| `mart_hourly_traffic_conversion` | truncated hour | `event_hour`, `total_visits`, `total_carts`, `total_orders` |
+| `fact_orders_gold` | one row per order | `order_id`, `product_id`, `employee_id`, `order_timestamp`, `order_date` (DATE), `product_revenue`, `addon_revenue`, `total_order_value` |
+| `mart_monthly_product_sales` | month × product | `month_prod_id`, `sales_month` (DATE), `product_id`, `category`, `subcategory`, `product_name`, `total_qty`, `product_revenue`, `addon_revenue`, `total_revenue`, `product_margin` |
+| `mart_hourly_traffic_conversion` | truncated hour | `event_hour`, `event_date` (DATE), `hour_of_day`, `total_visits`, `total_carts`, `total_orders` |
 | `mart_traffic_conversion_by_product` | month × product | `traffic_month`, `product_id`, `total_views`, `total_carts`, `total_orders`, `cart_rate_pct`, `conversion_rate_pct` |
 | `mart_employee_addon_performance` | month × employee | `performance_month`, `employee_id`, `total_orders`, `addon_orders`, `addon_attach_rate_pct`, `total_addon_revenue`, `avg_addon_value`, `tenure_months`, `tenure_bracket` |
 
@@ -227,11 +227,11 @@ Use this hierarchy on line chart X-axis for proper drill-down with year context 
 
 | From (many) | To (one) | Notes |
 |---|---|---|
-| FACT_ORDERS_GOLD.ORDER_TIMESTAMP | DIM_DATE.DATE_DAY | |
-| MART_MONTHLY_PRODUCT_SALES.SALES_MONTH | DIM_DATE.DATE_DAY | |
-| MART_EMPLOYEE_ADDON_PERFORMANCE.PERFORMANCE_MONTH | DIM_DATE.DATE_DAY | |
-| MART_TRAFFIC_CONVERSION_BY_PRODUCT.TRAFFIC_MONTH | DIM_DATE.DATE_DAY | |
-| MART_HOURLY_TRAFFIC_CONVERSION.EVENT_HOUR | DIM_DATE.DATE_DAY | |
+| FACT_ORDERS_GOLD.ORDER_DATE | DIM_DATE.DATE_DAY | DATE↔DATE — no datePartOnly needed |
+| MART_MONTHLY_PRODUCT_SALES.SALES_MONTH | DIM_DATE.DATE_DAY | DATE↔DATE |
+| MART_EMPLOYEE_ADDON_PERFORMANCE.PERFORMANCE_MONTH | DIM_DATE.DATE_DAY | DATE↔DATE |
+| MART_TRAFFIC_CONVERSION_BY_PRODUCT.TRAFFIC_MONTH | DIM_DATE.DATE_DAY | DATE↔DATE |
+| MART_HOURLY_TRAFFIC_CONVERSION.EVENT_DATE | DIM_DATE.DATE_DAY | DATE↔DATE — use EVENT_DATE not EVENT_HOUR |
 | ML_REVENUE_FORECAST.FORECAST_DATE | DIM_DATE.DATE_DAY | |
 | ML_ANOMALY_FLAGS.PERIOD | DIM_DATE.DATE_DAY | |
 | FACT_ORDERS_GOLD.PRODUCT_ID | DIM_PRODUCTS_GOLD.PRODUCT_ID | |
@@ -363,6 +363,7 @@ Snowflake connection from Airflow container uses `insecure_mode=True` (bypasses 
 - ~~Traffic line chart flat (no seasonality)~~ — **FIXED 2026-04-30** (full 12-month curve + DOW + event spikes)
 - ~~DIM_DATE starting 2023, missing 2 years of history~~ — **FIXED 2026-04-30** (starts 2021-01-01)
 - ~~Date hierarchy showing wrong counts on drill-down~~ — **FIXED 2026-04-30** (YEAR_QUARTER/YEAR_MONTH string columns used at Quarter/Month levels)
+- ~~Order count wrong when filtering specific period~~ — **FIXED 2026-04-30** (cast ORDER_DATE and EVENT_DATE as DATE type in dbt; relationships are now DATE↔DATE without needing datePartOnly)
 - **Power BI overwrites TMDL on save** — ongoing behaviour. Always close PBI before editing TMDL files. Use `SummarizationSetBy = User` to protect `summarizeBy: none` from being reverted.
 
 ---

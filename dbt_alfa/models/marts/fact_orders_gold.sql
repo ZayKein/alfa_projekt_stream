@@ -6,6 +6,7 @@
 SELECT 
     o.order_id,
     o.order_timestamp,
+    o.order_timestamp::DATE as order_date,
     o.employee_id,
     o.product_id,
     o.quantity,

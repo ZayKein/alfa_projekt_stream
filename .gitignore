@@ -3,4 +3,3 @@ keys/
 __pycache__/
 .DS_Store
 docker-compose.yaml
-CLAUDE.md

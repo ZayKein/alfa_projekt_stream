@@ -74,14 +74,17 @@ def run_revenue_forecast():
         )
         model.fit(prophet_df)
 
-        future = model.make_future_dataframe(periods=6, freq='MS')
+        future = model.make_future_dataframe(periods=24, freq='MS')
         forecast = model.predict(future)
         forecast = forecast[['ds', 'yhat', 'yhat_lower', 'yhat_upper']].copy()
         forecast = forecast.merge(prophet_df[['ds', 'y']], on='ds', how='left')
 
-        # Only keep future predictions — dates beyond the last actual data point
+        # Future only, capped at end of next calendar year
         last_actual = prophet_df['ds'].max()
-        forecast = forecast[forecast['ds'] > last_actual].copy()
+        target_end = pd.Timestamp(datetime.utcnow().year + 1, 12, 31)
+        forecast = forecast[
+            (forecast['ds'] > last_actual) & (forecast['ds'] <= target_end)
+        ].copy()
 
         for _, row in forecast.iterrows():
             results.append({
@@ -190,61 +193,67 @@ def run_anomaly_detection():
     print(f"✅ DONE: {len(result_df)} rows → GOLD.ML_ANOMALY_FLAGS ({anomaly_count} anomalies flagged)", flush=True)
 
 
-# ── 3. TRAFFIC PATTERN PREDICTION (Ridge Regression) ─────────────────────────
+# ── 3. TRAFFIC FORECAST (Facebook Prophet) ───────────────────────────────────
 
 def run_traffic_prediction():
-    from sklearn.linear_model import Ridge
-    from sklearn.preprocessing import OneHotEncoder
-    from sklearn.pipeline import Pipeline
+    from prophet import Prophet
 
     sf_hook = SnowflakeHook(snowflake_conn_id='snowflake_conn')
     sf_engine = _sf_engine()
 
-    print("INFO: Pulling hourly traffic data for pattern prediction...", flush=True)
+    print("INFO: Pulling daily traffic data for forecast...", flush=True)
 
     df = pd.read_sql("""
         SELECT
-            HOUR_OF_DAY,
-            DAYOFWEEKISO(EVENT_HOUR)  AS DAY_OF_WEEK,
-            DAYNAME(EVENT_HOUR)       AS DAY_NAME,
-            TOTAL_VISITS
+            EVENT_DATE,
+            SUM(TOTAL_VISITS) AS TOTAL_VISITS
         FROM GOLD.MART_HOURLY_TRAFFIC_CONVERSION
         WHERE TOTAL_VISITS IS NOT NULL
+        GROUP BY 1
+        ORDER BY 1
     """, sf_engine)
 
-    df.columns = [c.upper() for c in df.columns]
-    print(f"INFO: Loaded {len(df)} hourly rows for training.", flush=True)
+    df.columns = [c.lower() for c in df.columns]
+    df['event_date'] = pd.to_datetime(df['event_date'])
+    print(f"INFO: Loaded {len(df)} daily rows for training.", flush=True)
 
-    X = df[['HOUR_OF_DAY', 'DAY_OF_WEEK']].astype(str)
-    y = df['TOTAL_VISITS'].astype(float)
+    prophet_df = df.rename(columns={'event_date': 'ds', 'total_visits': 'y'})
 
-    model = Pipeline([
-        ('enc', OneHotEncoder(handle_unknown='ignore', sparse_output=False)),
-        ('reg', Ridge(alpha=1.0)),
-    ])
-    model.fit(X, y)
-
-    # Predict for all 168 hour × day combinations
-    hours = list(range(24))
-    days = list(range(1, 8))  # ISO: 1=Monday … 7=Sunday
-    day_names = {1: 'Monday', 2: 'Tuesday', 3: 'Wednesday', 4: 'Thursday',
-                 5: 'Friday', 6: 'Saturday', 7: 'Sunday'}
-
-    grid = pd.DataFrame(
-        [(h, d) for d in days for h in hours],
-        columns=['HOUR_OF_DAY', 'DAY_OF_WEEK']
+    model = Prophet(
+        yearly_seasonality=True,
+        weekly_seasonality=True,
+        daily_seasonality=False,
+        interval_width=0.95,
+        seasonality_mode='multiplicative',
     )
-    grid_X = grid.astype(str)
-    grid['PREDICTED_VISITS'] = model.predict(grid_X).clip(min=0).round(2)
-    grid['DAY_NAME'] = grid['DAY_OF_WEEK'].map(day_names)
-    grid['GENERATED_AT'] = datetime.utcnow()
+    model.fit(prophet_df)
+
+    future = model.make_future_dataframe(periods=24, freq='MS')
+    forecast = model.predict(future)
+    forecast = forecast[['ds', 'yhat', 'yhat_lower', 'yhat_upper']].copy()
+    forecast = forecast.merge(prophet_df[['ds', 'y']], on='ds', how='left')
+
+    # Future only, capped at end of next calendar year
+    last_actual = prophet_df['ds'].max()
+    target_end = pd.Timestamp(datetime.utcnow().year + 1, 12, 31)
+    forecast = forecast[
+        (forecast['ds'] > last_actual) & (forecast['ds'] <= target_end)
+    ].copy()
+
+    result_df = pd.DataFrame({
+        'PREDICTION_DATE':   forecast['ds'].dt.date,
+        'PREDICTED_VISITS':  forecast['yhat'].clip(lower=0).round(0),
+        'VISITS_LOWER':      forecast['yhat_lower'].clip(lower=0).round(0),
+        'VISITS_UPPER':      forecast['yhat_upper'].clip(lower=0).round(0),
+        'GENERATED_AT':      datetime.utcnow(),
+    })
 
     sf_hook.run("DROP TABLE IF EXISTS GOLD.ML_TRAFFIC_PREDICTION")
-    grid.to_sql(
+    result_df.to_sql(
         'ML_TRAFFIC_PREDICTION', sf_engine, schema='GOLD',
         if_exists='append', index=False, method='multi', chunksize=5000,
     )
-    print(f"✅ DONE: {len(grid)} rows → GOLD.ML_TRAFFIC_PREDICTION", flush=True)
+    print(f"✅ DONE: {len(result_df)} rows → GOLD.ML_TRAFFIC_PREDICTION", flush=True)
 
 
 # ── DAG DEFINITION ────────────────────────────────────────────────────────────

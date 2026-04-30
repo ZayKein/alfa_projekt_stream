@@ -44,16 +44,40 @@ def generate_traffic():
     growth = {2021: (100, 200), 2022: (200, 400), 2023: (400, 700), 2024: (
         700, 1200), 2025: (1200, 2000), 2026: (1500, 2500)}
 
+    # Full seasonal curve — realistic e-commerce pattern
+    month_mult = {
+        1: 0.70,   # post-holiday slump
+        2: 0.78,   # Valentine's pickup
+        3: 0.88,   # spring start
+        4: 0.92,
+        5: 1.05,   # Mother's Day
+        6: 0.88,   # early summer dip
+        7: 0.80,   # summer trough
+        8: 0.90,   # back-to-school
+        9: 1.00,   # back-to-school peak
+        10: 1.10,  # pre-holiday buildup
+        11: 2.50,  # Black Friday / Cyber Monday
+        12: 3.50,  # Christmas
+    }
+
+    # Day-of-week multiplier (ISO: 1=Mon … 7=Sun)
+    dow_mult = {1: 1.0, 2: 1.05, 3: 1.10, 4: 1.08, 5: 1.15, 6: 1.25, 7: 0.85}
+
     traffic_data = []
     curr = start_date
 
     # 3. Hlavní smyčka generování
     while curr <= end_date:
         year_config = growth.get(curr.year, (1500, 2500))
-        season_mult = 3.5 if curr.month == 12 else (
-            2.5 if curr.month == 11 else 1.0)
-        daily_clicks = int(random.randint(
-            year_config[0], year_config[1]) * season_mult)
+        season_mult = month_mult[curr.month]
+        dow = curr.isoweekday()
+        event_mult = random.uniform(1.8, 3.0) if random.random() < 0.03 else 1.0
+        daily_clicks = int(
+            random.randint(year_config[0], year_config[1])
+            * season_mult
+            * dow_mult[dow]
+            * event_mult
+        )
 
         for _ in range(daily_clicks):
             hour = random.choice([random.randint(10, 14), random.randint(

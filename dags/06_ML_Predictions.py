@@ -49,18 +49,15 @@ def run_revenue_forecast():
 
     results = []
     generated_at = datetime.utcnow()
-    categories = list(df['category'].unique()) + ['ALL']
+    categories = list(df['category'].unique())
 
     for category in categories:
-        if category == 'ALL':
-            cat_df = df.groupby('sales_month')['total_revenue'].sum().reset_index()
-        else:
-            cat_df = (
-                df[df['category'] == category]
-                .groupby('sales_month')['total_revenue']
-                .sum()
-                .reset_index()
-            )
+        cat_df = (
+            df[df['category'] == category]
+            .groupby('sales_month')['total_revenue']
+            .sum()
+            .reset_index()
+        )
 
         if len(cat_df) < 12:
             print(f"SKIP: {category} has only {len(cat_df)} months — skipping.", flush=True)
@@ -82,16 +79,18 @@ def run_revenue_forecast():
         forecast = forecast[['ds', 'yhat', 'yhat_lower', 'yhat_upper']].copy()
         forecast = forecast.merge(prophet_df[['ds', 'y']], on='ds', how='left')
 
+        # Only keep future predictions — dates beyond the last actual data point
+        last_actual = prophet_df['ds'].max()
+        forecast = forecast[forecast['ds'] > last_actual].copy()
+
         for _, row in forecast.iterrows():
             results.append({
                 'FORECAST_ID':      str(uuid.uuid4()),
                 'FORECAST_DATE':    row['ds'].date(),
                 'CATEGORY':         category,
-                'REVENUE_ACTUAL':   float(row['y']) if pd.notna(row.get('y')) else None,
                 'REVENUE_FORECAST': max(0.0, float(row['yhat'])),
                 'REVENUE_LOWER':    max(0.0, float(row['yhat_lower'])),
                 'REVENUE_UPPER':    max(0.0, float(row['yhat_upper'])),
-                'IS_FUTURE':        bool(pd.isna(row.get('y'))),
                 'GENERATED_AT':     generated_at,
             })
 

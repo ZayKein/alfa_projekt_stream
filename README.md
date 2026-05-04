@@ -85,6 +85,8 @@ alfa_projekt_stream/
 | `mart_monthly_product_sales` | month × product | Revenue & margin aggregation |
 | `mart_hourly_traffic_conversion` | truncated hour | Traffic & conversion by hour |
 | `mart_traffic_conversion_by_product` | month × product | Product-level funnel (views → carts → orders) |
+| `mart_city_sales` | city × day | Revenue, margin and orders aggregated by city and region |
+| `mart_product_reviews` | month × product | Average review score, review count, 5-star count, % positive |
 | `mart_employee_addon_performance` | month × employee | Addon attach rate & revenue by tenure |
 | `ML_REVENUE_FORECAST` | month × category | Prophet 6-month revenue forecast with confidence interval |
 | `ML_ANOMALY_FLAGS` | period × entity | Z-score anomaly flags for conversion rates and attach rates |
@@ -95,10 +97,16 @@ alfa_projekt_stream/
 ## Power BI Dashboard Pages
 
 1. **Sales Overview** — headline KPIs, monthly revenue trend, MoM and YoY comparison
-2. **Product Performance** — revenue and margin by category and product
+2. **Product Performance** — revenue and margin by category and product, decomposition tree with review scores
 3. **Traffic & Conversion Funnel** — views → carts → orders by product and over time
 4. **Hourly Patterns** — heatmap of traffic and conversion by hour of day
 5. **Employee Addon Performance** — addon attach rate and revenue by tenure bracket
+
+### Live Report
+
+**[View the Power BI report](https://app.powerbi.com/view?r=eyJrIjoiZDQ2NTExYjEtOTZkYi00OGZjLTg2MDAtMjI0ZjJmODQxMjM0IiwidCI6ImI2ZWUwY2QxLWVhYWQtNDZkOC05YzYzLTJmZTgxNGFjOWZjNSJ9&pageName=353600777c1baa3bc046)**
+
+> **Note:** This report is a work in progress with approximately 40 hours of development invested. Pages 1–3 are functional and polished. Pages 4–5 (Hourly Patterns and Employee Addon Performance) will be completed and polished as soon as personal circumstances allow.
 
 ---
 

@@ -86,6 +86,8 @@ alfa_projekt_stream/
 | `mart_monthly_product_sales` | měsíc × produkt | Agregace příjmů a marže |
 | `mart_hourly_traffic_conversion` | zkrácená hodina | Traffic a konverze po hodinách |
 | `mart_traffic_conversion_by_product` | měsíc × produkt | Produktový funnel (zobrazení → košík → objednávka) |
+| `mart_city_sales` | město × den | Příjmy, marže a objednávky agregované podle města a regionu |
+| `mart_product_reviews` | měsíc × produkt | Průměrné hodnocení, počet recenzí, počet 5hvězdiček, % pozitivních |
 | `mart_employee_addon_performance` | měsíc × zaměstnanec | Attach rate a příjem z addonů podle délky praxe |
 | `ML_REVENUE_FORECAST` | měsíc × kategorie | Prophet predikce příjmů na 6 měsíců s intervalem spolehlivosti |
 | `ML_ANOMALY_FLAGS` | období × entita | Z-score anomálie v konverzních mírách a attach rate |
@@ -96,10 +98,16 @@ alfa_projekt_stream/
 ## Power BI Dashboard — stránky
 
 1. **Přehled prodejů** — klíčové KPI, měsíční trend příjmů, MoM a YoY srovnání
-2. **Výkon produktů** — příjmy a marže podle kategorie a produktu
+2. **Výkon produktů** — příjmy a marže podle kategorie a produktu, dekompozitní strom s hodnocením recenzí
 3. **Traffic & Konverzní funnel** — zobrazení → košík → objednávka podle produktu a v čase
 4. **Hodinové vzorce** — heatmapa trafficu a konverzí podle hodiny dne
 5. **Výkon zaměstnanců (Addony)** — attach rate a příjem z addonů podle délky praxe
+
+### Live Report
+
+**[Zobrazit Power BI report](https://app.powerbi.com/view?r=eyJrIjoiZDQ2NTExYjEtOTZkYi00OGZjLTg2MDAtMjI0ZjJmODQxMjM0IiwidCI6ImI2ZWUwY2QxLWVhYWQtNDZkOC05YzYzLTJmZTgxNGFjOWZjNSJ9&pageName=353600777c1baa3bc046)**
+
+> **Poznámka:** Tento report je ve vývoji s přibližně 40 hodinami investované práce. Stránky 1–3 jsou funkční a dokončené. Stránky 4–5 (Hodinové vzorce a Výkon zaměstnanců) budou dokončeny a vyleštěny, jakmile to osobní situace umožní.
 
 ---
 

@@ -10,6 +10,16 @@ Projekt pokrývá celý datový životní cyklus: simulace zdrojových dat, orch
 
 ---
 
+## Live Power BI Report
+
+**[Zobrazit Power BI report](https://app.powerbi.com/view?r=eyJrIjoiZDQ2NTExYjEtOTZkYi00OGZjLTg2MDAtMjI0ZjJmODQxMjM0IiwidCI6ImI2ZWUwY2QxLWVhYWQtNDZkOC05YzYzLTJmZTgxNGFjOWZjNSJ9&pageName=353600777c1baa3bc046)**
+
+Power BI vrstva je primárním výstupem tohoto projektu — kompozitní model (Import + DirectQuery) postavený na Snowflake GOLD vrstvě se čtyřmi dashboard stránkami pokrývajícími prodeje, výkon produktů, traffic & konverze a hodnocení produktů.
+
+> **Projekt ve vývoji** — přibližně 40 hodin investované práce. Stránky 1–2 (Sales Overview, Product Performance) jsou plně dokončeny. Stránka 3 (Traffic & Conversion) potřebuje drobné úpravy. Stránka 4 (Product Rating) je dokončena přibližně z 50 % a bude dopracována, jakmile to osobní situace umožní.
+
+---
+
 ## Co platforma dělá
 
 1. **Generuje realistická data** — Python skripty simulují produktový katalog, HR data, webový provoz a objednávky se sezónností a peak-hour logikou.
@@ -97,17 +107,10 @@ alfa_projekt_stream/
 
 ## Power BI Dashboard — stránky
 
-1. **Přehled prodejů** — klíčové KPI, měsíční trend příjmů, MoM a YoY srovnání
-2. **Výkon produktů** — příjmy a marže podle kategorie a produktu, dekompozitní strom s hodnocením recenzí
-3. **Traffic & Konverzní funnel** — zobrazení → košík → objednávka podle produktu a v čase
-4. **Hodinové vzorce** — heatmapa trafficu a konverzí podle hodiny dne
-5. **Výkon zaměstnanců (Addony)** — attach rate a příjem z addonů podle délky praxe
-
-### Live Report
-
-**[Zobrazit Power BI report](https://app.powerbi.com/view?r=eyJrIjoiZDQ2NTExYjEtOTZkYi00OGZjLTg2MDAtMjI0ZjJmODQxMjM0IiwidCI6ImI2ZWUwY2QxLWVhYWQtNDZkOC05YzYzLTJmZTgxNGFjOWZjNSJ9&pageName=353600777c1baa3bc046)**
-
-> **Poznámka:** Tento report je ve vývoji s přibližně 40 hodinami investované práce. Stránky 1–3 jsou funkční a dokončené. Stránky 4–5 (Hodinové vzorce a Výkon zaměstnanců) budou dokončeny a vyleštěny, jakmile to osobní situace umožní.
+1. **Sales Overview** ✅ — KPI karty na úrovni měst, měsíční trend příjmů s tooltip srovnáním let, MoM a YoY metriky
+2. **Product Performance** ✅ — příjmy a marže podle kategorie a produktu, dekompozitní strom s hvězdičkovým hodnocením
+3. **Traffic & Conversion Funnel** 🔧 — zobrazení → košík → objednávka podle produktu a v čase
+4. **Product Rating** 🔄 — hodnocení produktů, hvězdičkové zobrazení a rozložení skóre
 
 ---
 

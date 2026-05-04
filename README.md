@@ -10,6 +10,16 @@ The platform simulates a real e-commerce operation: products are listed, custome
 
 ---
 
+## Live Power BI Report
+
+**[View the Power BI report](https://app.powerbi.com/view?r=eyJrIjoiZDQ2NTExYjEtOTZkYi00OGZjLTg2MDAtMjI0ZjJmODQxMjM0IiwidCI6ImI2ZWUwY2QxLWVhYWQtNDZkOC05YzYzLTJmZTgxNGFjOWZjNSJ9&pageName=353600777c1baa3bc046)**
+
+The Power BI layer is the primary output of this project — a composite model (Import + DirectQuery) built on top of the Snowflake GOLD layer with four dashboard pages covering sales, product performance, traffic & conversion, and product ratings.
+
+> **Work in progress** — approximately 40 hours of development invested. Pages 1–2 (Sales Overview, Product Performance) are fully complete. Page 3 (Traffic & Conversion) needs minor polishing. Page 4 (Product Rating) is approximately 50% complete and will be finished as soon as personal circumstances allow.
+
+---
+
 ## What the platform does
 
 1. **Generates realistic data** — Python scripts simulate product catalog, employee roster, web traffic events, and orders with seasonality and peak-hour patterns.
@@ -96,17 +106,10 @@ alfa_projekt_stream/
 
 ## Power BI Dashboard Pages
 
-1. **Sales Overview** — headline KPIs, monthly revenue trend, MoM and YoY comparison
-2. **Product Performance** — revenue and margin by category and product, decomposition tree with review scores
-3. **Traffic & Conversion Funnel** — views → carts → orders by product and over time
-4. **Hourly Patterns** — heatmap of traffic and conversion by hour of day
-5. **Employee Addon Performance** — addon attach rate and revenue by tenure bracket
-
-### Live Report
-
-**[View the Power BI report](https://app.powerbi.com/view?r=eyJrIjoiZDQ2NTExYjEtOTZkYi00OGZjLTg2MDAtMjI0ZjJmODQxMjM0IiwidCI6ImI2ZWUwY2QxLWVhYWQtNDZkOC05YzYzLTJmZTgxNGFjOWZjNSJ9&pageName=353600777c1baa3bc046)**
-
-> **Note:** This report is a work in progress with approximately 40 hours of development invested. Pages 1–3 are functional and polished. Pages 4–5 (Hourly Patterns and Employee Addon Performance) will be completed and polished as soon as personal circumstances allow.
+1. **Sales Overview** ✅ — city-level KPI cards, monthly revenue trend with year-comparison tooltip, MoM and YoY metrics
+2. **Product Performance** ✅ — revenue and margin by category and product, decomposition tree with review scores
+3. **Traffic & Conversion Funnel** 🔧 — views → carts → orders by product and over time
+4. **Product Rating** 🔄 — product review scores, star ratings, and score distribution
 
 ---
 

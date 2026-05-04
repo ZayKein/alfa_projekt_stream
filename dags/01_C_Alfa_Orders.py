@@ -52,6 +52,26 @@ def generate_orders_from_traffic():
     df_e = pd.read_csv(employees_file, parse_dates=['hire_date'])
     df_e['exit_date'] = pd.to_datetime(df_e['exit_date'])
 
+    # 20 largest Czech cities weighted by population
+    cities = [
+        'Praha', 'Brno', 'Ostrava', 'Plzeň', 'Liberec',
+        'Olomouc', 'České Budějovice', 'Hradec Králové', 'Pardubice', 'Ústí nad Labem',
+        'Havířov', 'Zlín', 'Kladno', 'Most', 'Frýdek-Místek',
+        'Opava', 'Karviná', 'Jihlava', 'Děčín', 'Teplice'
+    ]
+    city_weights = [
+        1357, 382, 285, 175, 104,
+        101,   94,  93,  92,  92,
+          69,  74,  69,  67,  56,
+          56,  53,  51,  50,  49
+    ]
+
+    # Deterministic quality score per product (3.5–5.0, avg ~4.2)
+    quality_scores = {}
+    for pid in df_p.index:
+        rng = random.Random(int(pid))
+        quality_scores[int(pid)] = max(3.5, min(5.0, rng.gauss(4.2, 0.35)))
+
     new_orders_list = []
     counter = 0
 
@@ -81,11 +101,15 @@ def generate_orders_from_traffic():
             chance = 0.35 if yrs >= 3 else (0.20 if yrs >= 1 else 0.10)
 
             p_cat = df_p.loc[pid, 'category']
-            if p_cat in ['Mobily', 'Laptops', 'Gaming', 'Elektronika', 'Bílé zboží'] and random.random() < chance:
-                st = random.choice(['Záruka+1', 'Pojištění'])
+            if p_cat in ['Mobile', 'Laptops', 'Gaming', 'Consumer Electronics', 'Home Appliances'] and random.random() < chance:
+                st = random.choice(['Warranty+1', 'Insurance'])
                 sp = round(df_p.loc[pid, 'base_price'] * 0.12)
 
-        new_orders_list.append([oid, pid, qty, st, sp, emp_id, o_date])
+        city = random.choices(cities, weights=city_weights, k=1)[0]
+        q_score = quality_scores.get(pid, 4.2)
+        review = int(round(max(1.0, min(5.0, random.gauss(q_score, 0.7)))))
+
+        new_orders_list.append([oid, pid, qty, st, sp, emp_id, o_date, city, review])
 
         counter += 1
         if counter % 5000 == 0:
@@ -94,7 +118,8 @@ def generate_orders_from_traffic():
 
     # 4. Uložení výsledku (APPEND MÓD)
     df_final = pd.DataFrame(new_orders_list, columns=[
-                            'order_id', 'product_id', 'quantity', 'service_type', 'service_price', 'employee_id', 'order_date'])
+        'order_id', 'product_id', 'quantity', 'service_type',
+        'service_price', 'employee_id', 'order_date', 'city', 'review'])
 
     file_exists = os.path.exists(orders_file)
     print(

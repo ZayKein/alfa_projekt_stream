@@ -65,11 +65,5 @@ with DAG(
         **t_config
     )
 
-    t06 = TriggerDagRunOperator(
-        task_id='trig_06_ml_predictions',
-        trigger_dag_id='06_ML_Predictions',
-        **t_config
-    )
-
     # --- LINEÁRNÍ TOK ---
-    t00 >> t01a >> t01b >> t01c >> t02 >> t03 >> t04 >> t06
+    t00 >> t01a >> t01b >> t01c >> t02 >> t03 >> t04

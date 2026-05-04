@@ -91,8 +91,8 @@ def generate_hr_data():
     # --- 2. PAYROLL DATA (MZDY) - INKREMENTÁLNÍ BLOK ---
     existing_payroll = pd.DataFrame()
     if os.path.exists(payroll_file):
-        existing_payroll = pd.read_csv(
-            payroll_file, parse_dates=['month_year'])
+        existing_payroll = pd.read_csv(payroll_file)
+        existing_payroll['month_year'] = pd.to_datetime(existing_payroll['month_year'], format='mixed')
         if not existing_payroll.empty:
             last_date = existing_payroll['month_year'].max()
             # Začneme generovat od měsíce po tom posledním uloženém

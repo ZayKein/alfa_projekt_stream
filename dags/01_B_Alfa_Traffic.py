@@ -40,9 +40,18 @@ def generate_traffic():
         print("INFO: Data jsou aktuální, není co generovat.", flush=True)
         return
 
-    # Definice růstu kliků pro období
-    growth = {2021: (100, 200), 2022: (200, 400), 2023: (400, 700), 2024: (
-        700, 1200), 2025: (1200, 2000), 2026: (1500, 2500)}
+    # Baseline daily clicks — same for all years
+    baseline = (800, 1400)
+
+    # Year multiplier — some years above, some below baseline
+    year_mult = {
+        2021: 0.60,  # early years, below baseline
+        2022: 0.85,
+        2023: 1.20,  # strong year
+        2024: 0.75,  # dip
+        2025: 1.25,  # best year
+        2026: 1.05,  # slightly above
+    }
 
     # Full seasonal curve — realistic e-commerce pattern
     month_mult = {
@@ -68,12 +77,13 @@ def generate_traffic():
 
     # 3. Hlavní smyčka generování
     while curr <= end_date:
-        year_config = growth.get(curr.year, (1500, 2500))
+        year_factor = year_mult.get(curr.year, 1.0)
         season_mult = month_mult[curr.month]
         dow = curr.isoweekday()
         event_mult = random.uniform(1.8, 3.0) if random.random() < 0.03 else 1.0
         daily_clicks = int(
-            random.randint(year_config[0], year_config[1])
+            random.randint(baseline[0], baseline[1])
+            * year_factor
             * season_mult
             * dow_mult[dow]
             * event_mult

@@ -10,6 +10,10 @@ test-paths: ["tests"]
 seed-paths: ["seeds"]
 macro-paths: ["macros"]
 
+seeds:
+  dbt_alfa:
+    +schema: GOLD
+
 models:
   dbt_alfa:
     staging:

@@ -15,7 +15,8 @@ SELECT
     MONTH(date_day)                                            AS month,
     DAY(date_day)                                              AS day,
     TO_CHAR(date_day, 'YYYY') || '-Q' || QUARTER(date_day)    AS year_quarter,
-    TO_CHAR(date_day, 'YYYY-MM')                               AS year_month
+    TO_CHAR(date_day, 'YYYY-MM')                               AS year_month,
+    TO_CHAR(date_day, 'Mon')                                   AS month_name
 FROM date_spine
 
 {% if is_incremental() %}
